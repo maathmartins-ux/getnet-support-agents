@@ -28,16 +28,18 @@ from .observability import METRICS, span
 # Getnet: faq = conhecimento (RAG do site); general = pergunta geral (clima, câmbio) pelo mesmo agente com busca
 # web; records = dados do lojista (liquidação, transações, terminal); troubleshoot = problema na maquininha:
 # estado do terminal/transação (records) + manual de solução (faq), em paralelo.
+# Intents da SPEC; os agentes mantêm os nomes do kit (faq = Knowledge, records = Customer Support; ADR 0003).
 PLANS = {
-    "faq": ["faq"],
+    "knowledge": ["faq"],
     "general": ["faq"],
-    "records": ["records"],
+    "support": ["records"],
     "troubleshoot": ["records", "faq"],
     "multi": ["faq", "records"],
     "human_request": ["escalation"],
 }
-# Status != ok → próximo agente. Sem fonte ou ferramenta quebrada termina em humano.
-FALLBACK = {"faq": "escalation", "records": "escalation"}
+# Status != ok → próximo agente. Sem fonte termina em humano; ferramenta quebrada tenta o conhecimento antes
+# (SPEC: "erro de tool → tenta knowledge → humano").
+FALLBACK = {"faq": "escalation", "records": "faq"}
 # Intents que nunca abrem caso humano por falta de fonte: clima e câmbio não são problema de atendimento.
 NO_ESCALATION = {"general"}
 # Transições permitidas (de → para). None = início. Escalation é terminal.

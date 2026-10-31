@@ -1,4 +1,4 @@
-"""Domínio Getnet — router offline: taxonomia (faq, general, records, troubleshoot, multi, human_request).
+"""Domínio Getnet — router offline: taxonomia da SPEC (knowledge, general, support, troubleshoot, multi, human_request).
 
 Frases: os 10 cenários do enunciado + paráfrases próprias. Nenhuma vem do held-out.
 """
@@ -8,26 +8,26 @@ from app.router import SCHEMA, classify_offline
 from app.supervisor import PLANS
 
 ENUNCIADO = [
-    ("What's the difference between the Get Clássica and the Get Smart?", "faq"),
+    ("What's the difference between the Get Clássica and the Get Smart?", "knowledge"),
     ("What's the weather forecast in Porto Alegre tomorrow?", "general"),
-    ("When will the money from yesterday's sales be deposited?", "records"),
-    ("Do I need a bank account to receive my sales via Pix?", "faq"),
+    ("When will the money from yesterday's sales be deposited?", "support"),
+    ("Do I need a bank account to receive my sales via Pix?", "knowledge"),
     ("My card machine won't connect to the internet, what should I do?", "troubleshoot"),
-    ("How does receivables advance (antecipação) work with Getnet?", "faq"),
+    ("How does receivables advance (antecipação) work with Getnet?", "knowledge"),
     ("What's the euro exchange rate today?", "general"),
     ("My card machine is showing a transaction decline error.", "troubleshoot"),
-    ("How many installments can I split a sale into with the crediário?", "faq"),
-    ("Can I sell through WhatsApp using the Payment Link?", "faq"),
+    ("How many installments can I split a sale into with the crediário?", "knowledge"),
+    ("Can I sell through WhatsApp using the Payment Link?", "knowledge"),
 ]
 
 PROPRIAS = [
     ("Qual a cotação do dólar agora?", "general", "pt"),
     ("Vai chover em Salvador amanhã?", "general", "pt"),
-    ("Quando cai na conta o dinheiro das vendas de ontem?", "records", "pt"),
-    ("Quero ver minhas transações recusadas", "records", "pt"),
+    ("Quando cai na conta o dinheiro das vendas de ontem?", "support", "pt"),
+    ("Quero ver minhas transações recusadas", "support", "pt"),
     ("A maquininha não conecta no Wi-Fi", "troubleshoot", "pt"),
     ("Deu erro de recusa na máquina", "troubleshoot", "pt"),
-    ("Preciso de conta bancária para receber minhas vendas via Pix?", "faq", "pt"),
+    ("Preciso de conta bancária para receber minhas vendas via Pix?", "knowledge", "pt"),
     ("Quero falar com um atendente", "human_request", "pt"),
     ("I want to speak to a real person", "human_request", "en"),
 ]

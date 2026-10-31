@@ -43,6 +43,9 @@ _GENERAL = re.compile(r"\b(clima|tempo amanh[aã]|previs[aã]o do tempo|vai chov
                       r"|forecast|(will|is) it (going to )?rain|c[aâ]mbio|cota[cç][aã]o|exchange rate"
                       r"|d[oó]lar|dollar|euro|bitcoin"
                       r"|not[ií]cias?|news|placar|score)\b", re.IGNORECASE)
+# Menção à Getnet ou à maquininha tira a pergunta de general (SPEC: produto que a Getnet não tem → knowledge).
+_GETNET = re.compile(r"\b(getnet|maquininha|card machine|terminal)\b", re.IGNORECASE)
+MULTI_PARTS = {"knowledge", "support"}  # o que uma frase-exemplo "multi" do k-NN soma às intenções
 # Problema na maquininha: estado do terminal/transação do lojista + manual de solução.
 _DEVICE = re.compile(r"\b(maquininha|m[aá]quina|terminal|pos|card machine|card reader|leitor)\b", re.IGNORECASE)
 _PROBLEM = re.compile(r"\b(n[aã]o (conecta|liga|funciona|imprime|l[eê])|sem (internet|sinal|conex[aã]o)|erro\w*"
@@ -56,7 +59,7 @@ _RECORDS = re.compile(r"\b(vendas? de (ontem|hoje|anteontem)|(yesterday|today)'?
                       r"|my (transactions?|terminals?|card machines?|pix key|bank account on file|profile|plan)"
                       r"|meu (plano|perfil|cadastro|saldo|extrato|terminal)|my (balance|statement)"
                       r"|quanto (vendi|recebi|vou receber)|how much (did i (sell|receive)|will i receive)"
-                      r"|transa[cç][aã]o \w*\d+|transaction \w*\d+|\d{4,})\b", re.IGNORECASE)
+                      r"|transa[cç][aã]o \w*\d+|transaction \w*\d+)\b", re.IGNORECASE)  # número solto não: "Ultra 9000"
 _FOLLOWUP = re.compile(r"\b(ele|ela|isso|esse|essa|it|that|this one)\b", re.IGNORECASE)
 # Confirmação no começo da fala ("Ok, vou tentar...", "Beleza, obrigado!"): não muda o assunto da conversa.
 _ACK = re.compile(r"^\W*(ok(ay)?|t[aá] bom|certo|beleza|blz|valeu|obrigad[oa]|entendi|show|perfeito|combinado"
@@ -231,40 +234,40 @@ def _is_troubleshoot(text: str) -> bool:
 def _clause_intent(text: str, history: list[dict]) -> str | None:
     if _HUMAN.search(text):
         return "human_request"
-    if _is_troubleshoot(text):  # antes de records: "erro na transação da maquininha" é problema, não extrato
+    if _is_troubleshoot(text):  # SPEC: sintoma vence dado ("erro na transação da maquininha" é troubleshoot)
         return "troubleshoot"
     if _RECORDS.search(text):
-        return "records"
-    if _GENERAL.search(text):
+        return "support"
+    if _GENERAL.search(text) and not _GETNET.search(text):  # "Bitcoin na maquininha Getnet" é knowledge
         return "general"
     last = topic_intent(history)
-    if last in ("records", "multi", "troubleshoot") and _FOLLOWUP.search(text):  # memória: seguimento
-        return "records" if last == "multi" else last
+    if last in ("support", "multi", "troubleshoot") and _FOLLOWUP.search(text):  # memória: seguimento
+        return "support" if last == "multi" else last
     # Nenhuma regra casou: o k-NN dos exemplos rotulados generaliza a paráfrase ("my approved sales").
     if (near := knn_intent(text)) is not None:
         return near
-    # Cláusula sem vocabulário do domínio ("Olá!", "Hoje tá frio, né?") não vira pergunta de FAQ:
-    # senão "Hoje tá frio, né? Meu pedido 1002?" seria multi (hard-02 da v3).
-    return "faq" if has_subject(text) else None
+    # Cláusula sem vocabulário do domínio ("Olá!", "Hoje tá frio, né?") não vira pergunta de conhecimento:
+    # senão "Hoje tá frio, né? Quanto vendi ontem?" seria multi (hard-02 da v3).
+    return "knowledge" if has_subject(text) else None
 
 
 def classify_offline(text: str, history: list[dict]) -> RouterDecision:
-    """Uma intenção por cláusula; cláusulas com intenções diferentes (faq + records) viram `multi`."""
+    """Uma intenção por cláusula; cláusulas com intenções diferentes (knowledge + support) viram `multi`."""
     lang = detect_language(text)
     intents: set[str] = set()
     for clause in split_clauses(text):
         found = _clause_intent(clause, history)
-        intents |= set(PLANS["multi"]) if found == "multi" else ({found} if found else set())
-    intents = intents or {"faq"}
+        intents |= MULTI_PARTS if found == "multi" else ({found} if found else set())
+    intents = intents or {"knowledge"}
     if "human_request" in intents:
         intent, conf = "human_request", 0.95
     elif "troubleshoot" in intents:  # o plano dele já tem records + faq
         intent, conf = "troubleshoot", 0.85
-    elif set(PLANS["multi"]) <= intents or {"general", "records"} <= intents:
+    elif len(intents & {"knowledge", "support", "general"}) >= 2 and "support" in intents:
         intent, conf = "multi", 0.8
     else:
-        intent = min(intents - {"faq"} or {"faq"})  # determinístico: assunto específico vence o padrão
-        conf = 0.85 if intent in ("records", "general") else 0.7
+        intent = min(intents - {"knowledge"} or {"knowledge"})  # determinístico: assunto específico vence
+        conf = 0.85 if intent in ("support", "general") else 0.7
     return RouterDecision(intent=intent, plan=PLANS[intent], language=lang, confidence=conf)
 
 
