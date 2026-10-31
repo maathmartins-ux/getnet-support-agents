@@ -87,16 +87,37 @@ flowchart LR
   G1 --> G2[Guardrail Haiku] & R[Router Haiku / regras + k-NN]
   G1 --> M[(SQLite: histórico, memória, tickets, ações)]
   R --> S{Supervisor Sonnet low / tabela}
-  S -->|lote paralelo| A1[knowledge: RAG + web] & A2[support: tools do CRM]
+  S -->|lote paralelo| A1[Knowledge faq: RAG + web] & A2[Support records: tools do CRM]
   A1 & A2 -->|status ok / insufficient / error| S
-  S -->|replaneja| E[escalation] --> Q[(Fila de handoff)] --> OP[/operator ou Telegram/] -->|resposta + retomada| M
+  S -->|replaneja| E[Escalation] --> Q[(Fila de handoff)] --> OP[/operator ou Telegram/] -->|resposta + retomada| M
 ```
 
-Quatro agentes, cada um com **uma fonte de verdade**: o router decide intenção e plano; o knowledge responde
-só do corpus ou da web, com citação; o support lê só os dados do lojista autenticado; o escalation abre o caso
-humano. Eles se comunicam por chamada de função com um contrato único (`AgentResult` com
-`status: ok | insufficient | error`, em `src/app/schemas.py` e `src/app/agents.py`). O supervisor lê esse status
-e replaneja. Os três diagramas detalhados (agentes, RAG, HITL) estão em [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+| Agente do enunciado | Nome no código | Fonte de verdade | Saída |
+|---|---|---|---|
+| Agent 1 — Router | `src/app/router.py` + supervisor (`src/app/supervisor.py`) | taxonomia da [SPEC](docs/SPEC.md) | intent, plano, idioma, confiança; replanejamento |
+| Agent 2 — Knowledge | `faq` (`agents.faq_agent`) | corpus do site Getnet Brasil; busca web só para `general` | resposta com `sources` citadas, ou `insufficient` |
+| Agent 3 — Customer Support | `records` (`agents.records_agent`) | CRM do lojista autenticado, 6 tools | dados, `tool_calls`, `pending_action` para escrita |
+| Agent 4 (bônus) — Human Escalation | `escalation` | fila persistida de tickets | protocolo; a resposta humana volta à conversa |
+
+Os nomes `faq`/`records` são o contrato do kit; trocá-los com 8 forks em paralelo custaria a integração
+([ADR 0003](docs/adr/0003-kit-declarado.md)). Os agentes se comunicam por **chamada direta de função** com um
+contrato único (`AgentResult` com `status: ok | insufficient | error`, em `src/app/agents.py`); com LLM, o
+supervisor os enxerga como **tools** (`faq_agent`, `records_agent`, `escalation_agent`, JSON Schema `strict`).
+O supervisor decide pelo status, nunca pelo texto, e todo desvio do plano vai para `replans` na resposta.
+
+**Taxonomia (SPEC) e plano inicial de cada intent:**
+
+| Intent | Quando | Plano | Se falhar |
+|---|---|---|---|
+| `knowledge` | como funciona produto, tarifa ou regra da Getnet | `faq` | sem fonte → humano |
+| `support` | **dado** do próprio lojista (quando cai, quanto vendi, antecipar meu valor) | `records` | erro de tool → knowledge → humano |
+| `troubleshoot` | **sintoma** operacional (não conecta, erro, recusa) | `records` + `faq` | humano |
+| `general` | clima, câmbio, assunto fora da Getnet | `faq` com busca web | **não escala**: sem web, diz que não sabe |
+| `multi` | duas perguntas de intents diferentes | união ordenada, em paralelo | conforme cada parte |
+| `human_request` | pede atendente | `escalation` | — |
+| `blocked` | guardrail barrou | — | recusa padrão |
+
+Os três diagramas detalhados (agentes, RAG, HITL) estão em [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ### 2.1 Fluxo de uma mensagem
 
@@ -107,7 +128,7 @@ e replaneja. Os três diagramas detalhados (agentes, RAG, HITL) estão em [docs/
 | 3 | Em paralelo: guardrail 2 (classificador Haiku) e router | `src/app/pipeline.py` | sim (Haiku) |
 | 4 | Router: intenção, plano, idioma, confiança (JSON schema + few-shot dinâmico; regras + k-NN offline) | `src/app/router.py` | sim, com fallback |
 | 5 | Supervisor: executa o plano, roda agentes independentes em paralelo, lê o status e replaneja dentro de `ALLOWED` e `MAX_STEPS` | `src/app/supervisor.py` | sim (Sonnet low), com fallback em tabela |
-| 6 | Agentes: knowledge (RAG/web), support (tools), escalation (ticket) | `src/app/agents.py`, `src/app/tools.py` | sim (Sonnet medium), com caminho determinístico |
+| 6 | Agentes: knowledge `faq` (RAG/web), support `records` (tools `get_settlements`, `get_transactions`, `get_terminal_status`; escrita `restart_terminal`, `request_anticipation`, `open_chargeback` só com confirmação), escalation (ticket) | `src/app/agents.py`, `src/app/tools.py` | sim (Sonnet medium), com caminho determinístico |
 | 7 | Saída segura: máscara de PII e **checagem de todo número contra fonte, tool e pergunta** | `src/app/grounding.py` | não |
 | 8 | Persistência: mensagens, resumo rolante, memória do lojista, analytics do request | `src/app/store.py` | não |
 | 9 | Resposta JSON: `answer`, `intent`, `route`, `replans`, `sources`, `tool_calls`, `handoff`, `pending_action`, `unsupported_numbers`, `usage` (tokens e US$) | `src/app/schemas.py` | — |
@@ -119,7 +140,7 @@ e replaneja. Os três diagramas detalhados (agentes, RAG, HITL) estão em [docs/
 | Ingestão | páginas do site Getnet Brasil viram trechos literais de 300–800 caracteres, cortados em parágrafo, com título, URL, data de coleta e SHA-256; fontes listadas | `src/app/ingest.py`, [docs/SOURCES.md](docs/SOURCES.md), [docs/SOURCES_SUPORTE.md](docs/SOURCES_SUPORTE.md) |
 | Armazenamento | JSONL versionado no git em `data/knowledge/`; documento com injeção é descartado na carga (`poisoned_docs_dropped_total`); índice em memória recarregado quando o arquivo muda | `src/app/rag.py::load_docs` |
 | Busca | consulta expandida pelo glossário pt↔en → BM25 (k1 1,5, b 0,75, título com peso 2) ou híbrido (BM25 + embeddings por RRF k=60) → rerank do top-20 pelo Haiku | `src/app/rag.py`, `data/glossary.json` |
-| Portão | sem trecho acima de `COVERAGE_MIN_SCORE` → `insufficient` → o supervisor replaneja (web, se for geral; humano, se for da Getnet) | `src/app/agents.py::covered_hits` |
+| Portão | sem trecho acima de `COVERAGE_MIN_SCORE` → `insufficient` → o supervisor replaneja (pergunta da Getnet sem fonte → humano; `general` usa a web e nunca escala) | `src/app/agents.py::covered_hits` |
 | Geração | Sonnet responde só dos trechos numerados, cita `[n]` ou devolve `NOT_IN_SOURCES`; número da resposta conferido contra os trechos | `src/app/prompts/faq.md`, `src/app/grounding.py` |
 | Medida | Recall@3 e MRR por retriever, com e sem rerank | `evals/retrieval.jsonl`, `evals/results/` |
 

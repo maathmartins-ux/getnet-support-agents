@@ -16,11 +16,11 @@ flowchart TD
   PAR --> RT[router.py<br/>Haiku + JSON schema + few-shot k-NN<br/>offline: regras + k-NN]
   G2 -->|bloqueado| REF
   RT -->|intent, plan, language, confidence| SUP[supervisor.py<br/>Sonnet low: agentes como tools<br/>fallback: tabela PLANS/FALLBACK]
-  SUP -->|lote independente, threads| K[knowledge<br/>RAG + web search]
-  SUP -->|lote independente, threads| S[support<br/>tools do CRM, identidade do servidor]
+  SUP -->|lote independente, threads| K[Knowledge · faq<br/>RAG + web search só em general]
+  SUP -->|lote independente, threads| S[Support · records<br/>6 tools do CRM, identidade do servidor]
   K -->|ok / insufficient / error| SUP
   S -->|ok / insufficient / error<br/>pending_action| SUP
-  SUP -->|replan dentro de ALLOWED<br/>MAX_STEPS = 4| E[escalation<br/>abre ticket]
+  SUP -->|replan dentro de ALLOWED<br/>MAX_STEPS = 4| E[Escalation<br/>abre ticket]
   SUP --> OUTG[grounding.py<br/>todo número conferido<br/>+ máscara de PII na saída]
   E --> OUTG
   OUTG --> ST[(store.py SQLite WAL<br/>mensagens, resumo rolante,<br/>memória do lojista, analytics)]
@@ -28,6 +28,7 @@ flowchart TD
 ```
 
 Regras que o desenho garante:
+- **Nomes.** No código os agentes são `faq` (Knowledge Agent do enunciado), `records` (Customer Support Agent) e `escalation`; mapa e motivo na [SPEC](SPEC.md) e no [ADR 0003](adr/0003-kit-declarado.md).
 - **Uma fonte de verdade por agente.** Knowledge só afirma o que está no corpus ou na web, com citação; support
   só lê o CRM do lojista autenticado; escalation só abre caso. Nenhum agente inventa o papel do outro.
 - **Contrato único.** Todo agente devolve `AgentResult` (`src/app/agents.py`) com `status`, `text`, `sources`,
