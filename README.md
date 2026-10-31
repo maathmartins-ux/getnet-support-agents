@@ -214,21 +214,60 @@ Números gerados por `python scripts/fill_readme.py` a partir de `evals/results/
 ### Offline (gate do CI)
 
 <!-- eval:begin -->
+Modo: `in-process` · provedor `offline`
+
+| Métrica | official | replan | parallel | approval | human | official-var | memory | hard | guardrail | heldout | ALL |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| cases | 10 | 20 | 12 | 10 | 1 | 54 | 13 | 42 | 34 | 24 | 220 |
+| intent_acc | 90.0 [IC95 59.6–98.2; n=10] | 100.0 [IC95 83.9–100.0; n=20] | 50.0 [IC95 25.4–74.6; n=12] | 80.0 [IC95 49.0–94.3; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 83.3 [IC95 71.3–91.0; n=54] | 61.5 [IC95 35.5–82.3; n=13] | 54.8 [IC95 39.9–68.8; n=42] | 88.2 [IC95 73.4–95.3; n=34] | 62.5 [IC95 42.7–78.8; n=24] | 75.0 [IC95 68.9–80.3; n=220] |
+| handoff_acc | 100.0 [IC95 72.2–100.0; n=10] | 10.0 [IC95 2.8–30.1; n=20] | 91.7 [IC95 64.6–98.5; n=12] | 100.0 [IC95 72.2–100.0; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 100.0 [IC95 89.3–100.0; n=32] | 100.0 [IC95 34.2–100.0; n=2] | 80.0 [IC95 37.6–96.4; n=5] | 100.0 [IC95 34.2–100.0; n=2] | 86.4 [IC95 66.7–95.3; n=22] | 80.2 [IC95 72.0–86.4; n=116] |
+| handoff_outcome_acc | 100.0 [IC95 72.2–100.0; n=10] | 10.0 [IC95 2.8–30.1; n=20] | 91.7 [IC95 64.6–98.5; n=12] | 100.0 [IC95 72.2–100.0; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 100.0 [IC95 89.3–100.0; n=32] | 100.0 [IC95 34.2–100.0; n=2] | 80.0 [IC95 37.6–96.4; n=5] | 100.0 [IC95 34.2–100.0; n=2] | 86.4 [IC95 66.7–95.3; n=22] | 80.2 [IC95 72.0–86.4; n=116] |
+| blocked_acc | — | — | — | — | — | — | — | — | 100.0 [IC95 86.7–100.0; n=25] | 0.0 [IC95 0.0–65.8; n=2] | 92.6 [IC95 76.6–97.9; n=27] |
+| language_acc | 40.0 [IC95 16.8–68.7; n=10] | 65.0 [IC95 43.3–81.9; n=20] | 66.7 [IC95 39.1–86.2; n=12] | 90.0 [IC95 59.6–98.2; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 75.9 [IC95 63.1–85.4; n=54] | 84.6 [IC95 57.8–95.7; n=13] | — | — | 77.3 [IC95 56.6–89.9; n=22] | 73.2 [IC95 65.4–79.8; n=142] |
+| tools_acc | 100.0 [IC95 43.9–100.0; n=3] | — | 50.0 [IC95 25.4–74.6; n=12] | 80.0 [IC95 49.0–94.3; n=10] | — | 66.7 [IC95 43.7–83.7; n=18] | 0.0 [IC95 0.0–49.0; n=4] | 60.0 [IC95 31.3–83.2; n=10] | 50.0 [IC95 15.0–85.0; n=4] | 25.0 [IC95 7.1–59.1; n=8] | 56.5 [IC95 44.8–67.6; n=69] |
+| pending_action_acc | — | — | — | 80.0 [IC95 49.0–94.3; n=10] | — | — | — | 100.0 [IC95 34.2–100.0; n=2] | 50.0 [IC95 9.5–90.5; n=2] | — | 78.6 [IC95 52.4–92.4; n=14] |
+| replanned_acc | — | 10.0 [IC95 2.8–30.1; n=20] | — | — | — | — | — | — | — | — | 10.0 [IC95 2.8–30.1; n=20] |
+| no_leak_acc | — | — | — | — | — | — | — | — | 100.0 [IC95 51.0–100.0; n=4] | — | 100.0 [IC95 51.0–100.0; n=4] |
+| numbers_acc | 100.0 [IC95 72.2–100.0; n=10] | 100.0 [IC95 83.9–100.0; n=20] | 100.0 [IC95 75.8–100.0; n=12] | 100.0 [IC95 72.2–100.0; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 100.0 [IC95 93.4–100.0; n=54] | 84.6 [IC95 57.8–95.7; n=13] | 100.0 [IC95 91.6–100.0; n=42] | 100.0 [IC95 70.1–100.0; n=9] | 100.0 [IC95 86.2–100.0; n=24] | 99.0 [IC95 96.3–99.7; n=195] |
+| language_undetected | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| recall@3 | — | — | — | — | — | — | — | — | — | — | — |
+| mrr | — | — | — | — | — | — | — | — | — | — | — |
+| p50_ms | 906.0 | 588.5 | 855.0 | 306.3 | 591.9 | 594.1 | 629.6 | 213.9 | 57.4 | 228.8 | 435.6 |
+| p95_ms | 13355.9 | 1257.3 | 7329.2 | 817.2 | 591.9 | 2071.2 | 8628.4 | 515.4 | 423.9 | 639.7 | 1702.3 |
+| cost_usd | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |
+| crashes | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+Gate (splits approval, guardrail, human, memory, official, official-var, parallel, replan): intent 82.5% [IC95 75.7–87.7; n=154] (mínimo 90%) → **FAIL**. Medidos fora do gate: hard, heldout. Isolamento: `db_per_case`.
+
+Falhas por checagem × split: blocked heldout 2 · handoff hard 1, heldout 3, parallel 1, replan 18 · handoff_outcome hard 1, heldout 3, parallel 1, replan 18 · intent approval 2, guardrail 4, hard 19, heldout 9, memory 5, official 1, official-var 9, parallel 6 · language approval 1, heldout 5, memory 2, official 6, official-var 13, parallel 4, replan 7 · numbers memory 2 · pending_action approval 2, guardrail 1 · replanned replan 18 · tools approval 2, guardrail 2, hard 4, heldout 6, memory 4, official-var 6, parallel 6
+Confusão de intenção (esperada → obtida): blocked → knowledge 1, support 1 · general → knowledge 3, support 1 · human_request → knowledge 1 · knowledge → support 6, general 2, human_request 1, multi 2 · multi → general 3, knowledge 3, support 3, human_request 1 · support → knowledge 8, general 2, multi 2, troubleshoot 1 · troubleshoot → support 4, knowledge 10
+
+Portão sem fonte: limiar efetivo 0.5 (MIN_SCORE) → responde 72.1% [IC95 60.4–81.3; n=68] dos com fonte, recusa 0.0% [IC95 0.0–17.6; n=18] dos sem fonte · recomendado 8.378 → responde 52.9% [IC95 41.2–64.3; n=68], recusa 88.9% [IC95 67.2–96.9; n=18] (68 com fonte, 18 sem; 0 sem fonte fora da conta por não chegarem ao agente de conhecimento; critério: max pos_answered com neg_refused >= 0.85; empate → menor limiar)
+
+Retrieval ativo (bm25, `evals/retrieval.jsonl`): Recall@3 **0.57** · MRR **0.618** · hit@3 0.721 [IC95 60.4–81.3; n=68] (68 perguntas)
 <!-- eval:end -->
 
 ### Ao vivo (LLM real, por split)
 
 <!-- eval-live:begin -->
+_Eval ao vivo não rodado (sem chave no relógio ou cortado). Ver Limitações._
 <!-- eval-live:end -->
 
 ### Juiz LLM sobre as respostas ao vivo
 
 <!-- judge:begin -->
+_Juiz não rodado._
 <!-- judge:end -->
 
 ### Replanejamento
 
 <!-- replan:begin -->
+| fonte | casos | replanned_acc | handoff_acc | handoff_outcome_acc | intent_acc |
+|---|---:|---:|---:|---:|---:|
+| offline | 20 | 10.0 [IC95 2.8–30.1; n=20] | 10.0 [IC95 2.8–30.1; n=20] | 10.0 [IC95 2.8–30.1; n=20] | 100.0 [IC95 83.9–100.0; n=20] |
+
+- `replan-13` (offline): faq:no_source->escalation
+- `replan-17` (offline): faq:no_source->escalation
 <!-- replan:end -->
 
 ## 6. Spec e rastreabilidade
@@ -238,6 +277,84 @@ Spec em [docs/SPEC.md](docs/SPEC.md), commitada antes do código. ADRs em [docs/
 ## 7. Linha do tempo (git log)
 
 <!-- timeline:begin -->
+| hora | min | commit |
+|---|---:|---|
+| 14:13:56 | 0 | chore: scaffold from entregar-desafio-cronometrado kit v3.6.0 |
+| 14:23:03 | 9 | fork e: 25 casos de guardrail bloqueáveis (injeção direta/indireta, ofuscação, jailbreak, outro lojista, abuso) |
+| 14:23:41 | 10 | fork b: CRM de 2 lojistas com datas relativas |
+| 14:23:50 | 10 | fork c2: EVAL_STRATEGY (taxonomia, splits, gate, pass^k, Wilson, juiz TPR/TNR, produção) |
+| 14:24:42 | 11 | fork d: esqueleto do README (rodar, arquitetura, fluxo, RAG, LLM, MCP, decisões, limitações) |
+| 14:24:42 | 11 | fork c2: VIDEO_SCRIPT (14 cenas, números por chave, aviso de narração por IA) |
+| 14:25:12 | 11 | fork o: router com general/troubleshoot e supervisor com NO_ESCALATION |
+| 14:25:25 | 11 | fork b: 7 tools do lojista com dias úteis e risco |
+| 14:25:34 | 12 | fork a2: corpus suporte (129 trechos literais site.getnet.com.br) |
+| 14:25:56 | 12 | fork d: ARCHITECTURE com 3 diagramas mermaid (agentes, RAG, HITL) |
+| 14:26:09 | 12 | fork a1: ingest BR + 69 trechos de produto |
+| 14:26:57 | 13 | fork e: 10 cenários HTTP em demo/required e recusas de token (sem exp, expirado, alg none, iss/aud, revogado) |
+| 14:27:04 | 13 | fork b: prompt records do lojista |
+| 14:27:38 | 14 | fork c1: rascunho de casos e exemplos de intent |
+| 14:27:39 | 14 | fork d: OBSERVABILITY (SLOs, métricas, painéis, alertas com limiar e ação, logs, traces) |
+| 14:27:45 | 14 | fork o: prompts do domínio Getnet (papel, formato, recusa, citação, exemplos) |
+| 14:27:57 | 14 | fork a1: 158 trechos (paginas de produto + blog BR) |
+| 14:28:02 | 14 | spec: SPEC Getnet (IDs, 10 cenarios literais, taxonomia support x troubleshoot + general, tools congeladas), cases oficiais+replan 20+parallel+approval, heldout cego 24, ADR 0002/0003 |
+| 14:28:14 | 14 | fork b: testes de contrato das tools (61) |
+| 14:29:12 | 15 | fork c2: merge main (spec) |
+| 14:29:14 | 15 | fork d: RUNBOOK (10 incidentes com confirmação e resposta) |
+| 14:29:17 | 15 | fork a2: retrieval.d/a2 (28 com fonte, 15 negativos) e SOURCES_SUPORTE |
+| 14:29:26 | 16 | fork a1: glossario pt-en (60) + 34 perguntas de retrieval |
+| 14:29:33 | 16 | fork d: merge main (spec) |
+| 14:29:34 | 16 | Merge branch 'main' into fork/a2 |
+| 14:29:53 | 16 | fork c1: 97 casos (official-var, parallel, approval, memory, hard) |
+| 14:30:04 | 16 | fork c1: merge main (spec) |
+| 14:30:21 | 16 | fork e: 35 testes, um por controle do threat model (C-01..C-21) |
+| 14:30:33 | 17 | fork e: merge main (spec) |
+| 14:31:12 | 17 | fork d: README e ARCHITECTURE alinhados à SPEC (agentes faq/records, taxonomia, 6 tools) |
+| 14:31:23 | 17 | fork c1: casos alinhados a SPEC (tools congeladas, support x troubleshoot) + hard extra |
+| 14:31:25 | 17 | fork b: merge main (spec) |
+| 14:31:58 | 18 | fork e: +9 casos de domínio (PII de terceiro, outro lojista cliente2024, fora de escopo, antecipação sem aprovação) = 34 |
+| 14:32:06 | 18 | fork d: ADRs 0004-0007 (supervisor, RAG, checagem numérica, HITL) |
+| 14:32:40 | 19 | fork d: ADRs só com afirmação sustentada por arquivo do repo |
+| 14:32:51 | 19 | fork o: testes de domínio do router e do supervisor; chuva como conversa não vira general |
+| 14:32:52 | 19 | fork a1: test_ingest + SOURCES.md + ruff |
+| 14:33:09 | 19 | Merge branch 'main' into fork/o |
+| 14:33:39 | 20 | Merge branch 'main' into fork/a1 |
+| 14:33:49 | 20 | fork e: THREAT_MODEL STRIDE + OWASP LLM 2025, 22 controles com arquivo e teste |
+| 14:33:59 | 20 | fork c1: extra pronto (+30 hard de parafrase e mistura de idiomas) |
+| 14:36:17 | 22 | fork b: nomes congelados da SPEC (get_settlements, get_transactions, open_chargeback) |
+| 14:36:17 | 22 | fork c2: 8 rótulos de web (4 positivos, 4 negativos) na calibração do juiz |
+| 14:37:25 | 23 | fork a2: pronto |
+| 14:37:46 | 24 | fork d: RUNBOOK rollback sem supor volume no compose |
+| 14:38:45 | 25 | fork c1: reescreve 9 frases que repetiam 5 palavras do held-out/oficiais |
+| 14:39:03 | 25 | fork e: extra pronto — carga 50 concorrentes (50/50 200; p50 15 s, p95 21 s offline) |
+| 14:42:40 | 29 | fork d: ingestão descrita pelo ingest.py real do fork a1 |
+| 14:44:28 | 31 | fork a1: pronto |
+| 14:45:52 | 32 | fork d: links dos ADRs 0002/0004-0006 nas decisões; mermaid sem chaves duplas |
+| 14:50:44 | 37 | fork o: intents da SPEC (knowledge/support), FALLBACK records->faq, general não captura produto Getnet, replan 20/20 |
+| 14:51:30 | 38 | agents: Customer Support offline pelas tools da SPEC (suporte x troubleshoot, consulta antes de agir, contestacao so de aprovada) |
+| 14:51:35 | 38 | merge fork/a1 |
+| 14:51:43 | 38 | merge fork/a2 |
+| 14:51:43 | 38 | fork b: pronto |
+| 14:53:00 | 39 | fork d: merge main (onda 1) |
+| 14:53:12 | 39 | fork c2: merge main |
+| 14:53:52 | 40 | merge fork/o |
+| 14:54:13 | 40 | merge fork/b |
+| 14:54:27 | 41 | merge fork/c1 |
+| 14:54:43 | 41 | merge fork/e |
+| 14:54:55 | 41 | merge fork/c2 |
+| 14:55:01 | 41 | merge fork/d |
+| 14:57:12 | 43 | fork o: DEPENDS faq<-records (troubleshoot sequencial: faq lê o terminal) |
+| 14:57:16 | 43 | fork o: pronto |
+| 14:57:26 | 44 | fork e: pronto |
+| 14:57:44 | 44 | fork c2: 42 rótulos humanos do juiz (rag 21, crm 11, web 8, handoff 2; 22 pos / 20 neg) |
+| 14:58:33 | 45 | fork c2: pronto |
+| 14:58:46 | 45 | onda 2: fork/o (DEPENDS faq<-records) integrado pelo maestro |
+| 14:58:48 | 45 | fork c1: pronto (127 casos: 85 no gate + 42 hard; 52 exemplos de intent; check.py rodando apos este commit) |
+| 14:58:50 | 45 | onda 2: fork/e (pronto) integrado pelo maestro |
+| 14:59:38 | 46 | onda 3: fork/c2 (42 rótulos do juiz) integrado pelo maestro |
+| 14:59:42 | 46 | onda 3: fork/c1 (pronto, 127 casos) integrado pelo maestro |
+| 15:01:13 | 47 | onda 1: forks o, a1, a2, b, c1, e, c2, d integrados (posse OK); eval offline intent 82,5% (gate 90% FAIL), official 90%, heldout 62,5% |
+
+Do primeiro ao último commit: **47 min**.
 <!-- timeline:end -->
 
 ## 8. Scaffold declarado (kit) e o que foi feito no relógio
@@ -259,6 +376,41 @@ específico do desafio (spec, base de conhecimento, ferramentas do domínio, cas
 regras do router e do supervisor) foi escrito no relógio. A medida, tirada do git:
 
 <!-- kit:begin -->
+| pasta | linhas do kit | + no relógio | − no relógio | arquivos do kit alterados |
+|---|---:|---:|---:|---:|
+| `.claude` | 84 | 0 | 0 | 0 |
+| `.dockerignore` | 14 | 0 | 0 | 0 |
+| `.env.example` | 28 | 0 | 0 | 0 |
+| `.github` | 29 | 0 | 0 | 0 |
+| `.gitignore` | 10 | 0 | 0 | 0 |
+| `Dockerfile` | 48 | 0 | 0 | 0 |
+| `ESTADO.md` | 0 | 5 | 0 | 0 |
+| `Makefile` | 23 | 0 | 0 | 0 |
+| `OWNERSHIP.json` | 63 | 0 | 0 | 0 |
+| `README.md` | 137 | 168 | 33 | 1 |
+| `data` | 34 | 59 | 7 | 1 |
+| `data/crm` | 0 | 43 | 0 | 0 |
+| `data/intent_examples.d` | 0 | 52 | 0 | 0 |
+| `data/knowledge` | 0 | 288 | 0 | 0 |
+| `docker-compose.yml` | 11 | 0 | 0 | 0 |
+| `docs` | 32 | 854 | 16 | 1 |
+| `docs/adr` | 20 | 136 | 0 | 0 |
+| `evals` | 936 | 59 | 12 | 1 |
+| `evals/cases.d` | 0 | 161 | 0 | 0 |
+| `evals/judge_calibration.d` | 0 | 42 | 0 | 0 |
+| `evals/results` | 0 | 21909 | 0 | 0 |
+| `evals/retrieval.d` | 0 | 77 | 0 | 0 |
+| `ops` | 55 | 0 | 0 | 0 |
+| `pyproject.toml` | 44 | 0 | 0 | 0 |
+| `requirements-dev.lock` | 248 | 0 | 0 | 0 |
+| `requirements-hybrid.lock` | 278 | 0 | 0 | 0 |
+| `requirements.lock` | 145 | 0 | 0 | 0 |
+| `scripts` | 576 | 0 | 0 | 0 |
+| `src/app` | 3474 | 799 | 84 | 11 |
+| `tests` | 3433 | 934 | 0 | 0 |
+| `tests/fixtures` | 49 | 0 | 0 | 0 |
+
+Total: **9771** linhas do kit (commit `f0e500e`) e **25586** escritas no relógio (72% do total). Arquivos do kit alterados no relógio: 15.
 <!-- kit:end -->
 
 ## 9. Limitações e próximos passos
