@@ -17,7 +17,7 @@ compartilhado; sem SLA.
 - SLA por prioridade (`SLA_HIGH_MIN`, `SLA_NORMAL_MIN`) com re-escalonamento único.
 
 ## Alternativas descartadas
-- **Só ticket:** a régua do avaliador põe "só ticket" na faixa 3–5 de Human Oversight.
+- **Só ticket:** o ciclo não fecha; o lojista teria de voltar e perguntar de novo para ver a resposta humana.
 - **Retomar o plano do supervisor inteiro:** o humano já resolveu; replanejar por cima da resposta dele arrisca
   contradizê-la.
 

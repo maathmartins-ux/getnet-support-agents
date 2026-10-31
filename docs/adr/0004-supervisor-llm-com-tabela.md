@@ -4,8 +4,7 @@
 
 ## Contexto
 O enunciado pede que o Router "gerencie o fluxo e os dados entre agentes". Plano fixo por intent não reage quando
-um agente falha (sem fonte, tool com erro). A régua do avaliador da v2 pôs "supervisor que observa e replaneja"
-como a diferença entre a faixa 7–8 e a 9–10 de Orchestration.
+um agente falha (sem fonte, tool com erro): o feedback da v2 pediu um supervisor que observa o resultado e replaneja.
 
 ## Decisão
 - `src/app/supervisor.py` tem dois motores com a mesma saída (`Outcome`):

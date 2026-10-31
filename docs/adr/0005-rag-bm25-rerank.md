@@ -17,7 +17,6 @@ não o recall.
 
 ## Alternativas descartadas
 - **Embeddings desde o início:** dependência pesada na imagem para atacar o recall, que não é o gargalo.
-- **Prefixo do caminho da URL no BM25:** medido antes do relógio, R@3 0,708 → 0,712, dentro do ruído com n = 45.
 - **Traduzir a pergunta com LLM:** custo e latência em todo turno para um mapeamento fixo de termos.
 
 ## Consequências
