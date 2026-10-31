@@ -1,0 +1,63 @@
+{
+  "frozen": [
+    "src/app/schemas.py",
+    "OWNERSHIP.json",
+    "docs/SPEC.md",
+    "evals/heldout_blind.jsonl"
+  ],
+  "forks": {
+    "o": [
+      "src/app/router.py",
+      "src/app/supervisor.py",
+      "src/app/prompts/router.md",
+      "src/app/prompts/supervisor.md",
+      "src/app/prompts/faq.md",
+      "src/app/prompts/general.md",
+      "src/app/prompts/guardrail.md",
+      "src/app/prompts/resume.md",
+      "tests/test_domain_router.py",
+      "tests/test_domain_supervisor.py"
+    ],
+    "a1": [
+      "data/knowledge/produtos/**",
+      "data/glossary.json",
+      "evals/retrieval.d/a1.jsonl",
+      "src/app/ingest.py",
+      "tests/test_ingest.py",
+      "docs/SOURCES.md"
+    ],
+    "a2": [
+      "data/knowledge/suporte/**",
+      "evals/retrieval.d/a2.jsonl",
+      "docs/SOURCES_SUPORTE.md"
+    ],
+    "b": [
+      "src/app/tools.py",
+      "data/crm/**",
+      "src/app/prompts/records.md",
+      "tests/test_tools.py"
+    ],
+    "c1": [
+      "evals/cases.d/c1.jsonl",
+      "data/intent_examples.d/c1.jsonl"
+    ],
+    "c2": [
+      "evals/judge_calibration.d/c2.jsonl",
+      "docs/EVAL_STRATEGY.md",
+      "docs/VIDEO_SCRIPT.md"
+    ],
+    "e": [
+      "evals/cases.d/e.jsonl",
+      "tests/test_domain_http.py",
+      "tests/test_domain_guardrails.py",
+      "docs/THREAT_MODEL.md"
+    ],
+    "d": [
+      "README.md",
+      "docs/ARCHITECTURE.md",
+      "docs/OBSERVABILITY.md",
+      "docs/RUNBOOK.md",
+      "docs/adr/**"
+    ]
+  }
+}
