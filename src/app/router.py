@@ -36,8 +36,25 @@ SCHEMA = {
 }
 
 _HUMAN = re.compile(r"\b(atendente|humano|pessoa real|falar com algu[eé]m|human|representative|real person"
-                    r"|operador|operator)\b", re.IGNORECASE)
-_RECORDS = re.compile(r"\b(pedido|pedidos|order|orders|cancel\w*|\d{4})\b", re.IGNORECASE)
+                    r"|operador|operator|live agent|gerente de conta|account manager)\b", re.IGNORECASE)
+# Getnet: pergunta geral, fora da base (clima, câmbio, cotação, notícia) → agente de conhecimento com busca web.
+_GENERAL = re.compile(r"\b(clima|tempo amanh[aã]|previs[aã]o do tempo|vai chover|chuva|temperatura|weather"
+                      r"|forecast|rain\w*|c[aâ]mbio|cota[cç][aã]o|exchange rate|d[oó]lar|dollar|euro|bitcoin"
+                      r"|not[ií]cias?|news|placar|score)\b", re.IGNORECASE)
+# Problema na maquininha: estado do terminal/transação do lojista + manual de solução.
+_DEVICE = re.compile(r"\b(maquininha|m[aá]quina|terminal|pos|card machine|card reader|leitor)\b", re.IGNORECASE)
+_PROBLEM = re.compile(r"\b(n[aã]o (conecta|liga|funciona|imprime|l[eê])|sem (internet|sinal|conex[aã]o)|erro\w*"
+                      r"|travad\w*|desligou|offline|won'?t|doesn'?t|not (connect|work|turn)\w*|error\w*"
+                      r"|declin\w*|recus\w*|frozen|stuck|broken|quebrad\w*)\b", re.IGNORECASE)
+# Dado do PRÓPRIO lojista: depósito/liquidação, vendas e transações dele, perfil, maquininhas dele.
+_RECORDS = re.compile(r"\b(vendas? de (ontem|hoje|anteontem)|(yesterday|today)'?s sales|my sales from"
+                      r"|minhas vendas (de|do|da)|meu dinheiro|my money|the money from|o dinheiro d[ae]s?"
+                      r"|depositad\w*|deposited|cai(r|u)? na (minha )?conta|liquida[cç][aã]o|settlement\w*"
+                      r"|minhas? (transa[cç][oõ]es|transa[cç][aã]o|maquininhas?|terminais|chave pix|conta banc[aá]ria)"
+                      r"|my (transactions?|terminals?|card machines?|pix key|bank account on file|profile|plan)"
+                      r"|meu (plano|perfil|cadastro|saldo|extrato|terminal)|my (balance|statement)"
+                      r"|quanto (vendi|recebi|vou receber)|how much (did i (sell|receive)|will i receive)"
+                      r"|transa[cç][aã]o \w*\d+|transaction \w*\d+|\d{4,})\b", re.IGNORECASE)
 _FOLLOWUP = re.compile(r"\b(ele|ela|isso|esse|essa|it|that|this one)\b", re.IGNORECASE)
 # Confirmação no começo da fala ("Ok, vou tentar...", "Beleza, obrigado!"): não muda o assunto da conversa.
 _ACK = re.compile(r"^\W*(ok(ay)?|t[aá] bom|certo|beleza|blz|valeu|obrigad[oa]|entendi|show|perfeito|combinado"
@@ -188,7 +205,7 @@ def detect_language(text: str) -> str:
 
 def _states_subject(text: str) -> bool:
     """Fala que define assunto: casa uma regra ou tem vocabulário do domínio, e não é só confirmação."""
-    if _HUMAN.search(text) or _RECORDS.search(text):
+    if _HUMAN.search(text) or _RECORDS.search(text) or _GENERAL.search(text) or _is_troubleshoot(text):
         return True
     return not _ACK.match(text) and has_subject(text)
 
@@ -205,14 +222,22 @@ def topic_intent(history: list[dict]) -> str | None:
     return None
 
 
+def _is_troubleshoot(text: str) -> bool:
+    return bool(_DEVICE.search(text) and _PROBLEM.search(text))
+
+
 def _clause_intent(text: str, history: list[dict]) -> str | None:
     if _HUMAN.search(text):
         return "human_request"
+    if _is_troubleshoot(text):  # antes de records: "erro na transação da maquininha" é problema, não extrato
+        return "troubleshoot"
     if _RECORDS.search(text):
         return "records"
+    if _GENERAL.search(text):
+        return "general"
     last = topic_intent(history)
-    if last in ("records", "multi") and _FOLLOWUP.search(text):  # memória: pergunta de seguimento
-        return "records"
+    if last in ("records", "multi", "troubleshoot") and _FOLLOWUP.search(text):  # memória: seguimento
+        return "records" if last == "multi" else last
     # Nenhuma regra casou: o k-NN dos exemplos rotulados generaliza a paráfrase ("my approved sales").
     if (near := knn_intent(text)) is not None:
         return near
@@ -231,11 +256,13 @@ def classify_offline(text: str, history: list[dict]) -> RouterDecision:
     intents = intents or {"faq"}
     if "human_request" in intents:
         intent, conf = "human_request", 0.95
-    elif set(PLANS["multi"]) <= intents:
+    elif "troubleshoot" in intents:  # o plano dele já tem records + faq
+        intent, conf = "troubleshoot", 0.85
+    elif set(PLANS["multi"]) <= intents or {"general", "records"} <= intents:
         intent, conf = "multi", 0.8
     else:
         intent = min(intents - {"faq"} or {"faq"})  # determinístico: assunto específico vence o padrão
-        conf = 0.85 if intent == "records" else 0.7
+        conf = 0.85 if intent in ("records", "general") else 0.7
     return RouterDecision(intent=intent, plan=PLANS[intent], language=lang, confidence=conf)
 
 
