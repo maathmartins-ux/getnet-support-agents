@@ -3,7 +3,7 @@
 Uso: .venv/Scripts/python.exe -m app.ingest [--out data/knowledge/produtos]
 
 Cada linha: {id, title, url, text, fetched_at, sha256}. `text` é recorte literal do HTML (só texto visível,
-sem menu/rodapé), agrupado em trechos de 300–800 caracteres. Linha que se repete em metade das páginas ou mais é chrome do
+sem menu/rodapé), agrupado em trechos de 300–800 caracteres. Linha repetida em metade das páginas é chrome do
 site (menu, banner de cookie) e sai. Só domínios do Brasil: getnet.net/pt é Portugal e fica de fora.
 """
 
@@ -15,7 +15,7 @@ import json
 import re
 import urllib.request
 from collections import Counter
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
@@ -52,8 +52,33 @@ PRODUCT_PAGES = {
 
 SKIP_TAGS = {"script", "style", "noscript", "svg", "header", "footer", "nav", "template", "iframe", "form"}
 BLOCK_TAGS = {
-    "p", "div", "section", "article", "li", "ul", "ol", "h1", "h2", "h3", "h4", "h5", "h6", "br", "tr",
-    "td", "th", "table", "dt", "dd", "button", "a", "span_block", "summary", "details", "main", "aside",
+    "p",
+    "div",
+    "section",
+    "article",
+    "li",
+    "ul",
+    "ol",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "br",
+    "tr",
+    "td",
+    "th",
+    "table",
+    "dt",
+    "dd",
+    "button",
+    "a",
+    "span_block",
+    "summary",
+    "details",
+    "main",
+    "aside",
 }
 
 
@@ -170,7 +195,7 @@ def fetch(url: str) -> str:
 
 
 def build(pages: dict[str, str], out_dir: Path) -> dict[str, list[dict]]:
-    fetched_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    fetched_at = datetime.now(UTC).isoformat(timespec="seconds")
     parsed = {slug: (url, *extract(fetch(url))) for slug, url in pages.items()}
     freq = Counter(line for _, _, lines in parsed.values() for line in set(lines))
     out_dir.mkdir(parents=True, exist_ok=True)
