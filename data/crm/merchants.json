@@ -1,0 +1,43 @@
+{
+  "_doc": "CRM de exemplo. Datas RELATIVAS: days_ago = dias corridos antes de hoje (0 = hoje). Nenhuma data fixa: tools.py calcula venda, liquidação (dias úteis + feriados bancários nacionais) e agenda a partir de date.today().",
+  "cliente1988": {
+    "name": "Padaria Pão Dourado",
+    "plan": "Get Smart",
+    "anticipation_fee_pct": 1.99,
+    "terminals": [
+      {"terminal_id": "T1988A", "model": "Getnet Smart", "status": "online", "connection": "wifi", "signal": "forte", "paper": "ok", "last_seen_minutes": 2},
+      {"terminal_id": "T1988B", "model": "Getnet Clássica", "status": "sem_sinal", "connection": "chip", "signal": "sem_sinal", "paper": "ok", "last_seen_minutes": 190}
+    ],
+    "transactions": [
+      {"transaction_id": "TX1001", "days_ago": 0, "time": "08:12", "amount": 18.50, "brand": "Visa", "modality": "debito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T1988A"},
+      {"transaction_id": "TX1002", "days_ago": 0, "time": "09:40", "amount": 230.00, "brand": "Mastercard", "modality": "credito", "status": "recusada", "code": "51", "reason": "Saldo ou limite insuficiente", "terminal_id": "T1988A"},
+      {"transaction_id": "TX1003", "days_ago": 1, "time": "07:55", "amount": 42.90, "brand": "Elo", "modality": "debito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T1988A"},
+      {"transaction_id": "TX1004", "days_ago": 1, "time": "11:20", "amount": 350.00, "brand": "Visa", "modality": "credito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T1988A"},
+      {"transaction_id": "TX1005", "days_ago": 1, "time": "12:05", "amount": 89.90, "brand": "Mastercard", "modality": "credito", "status": "recusada", "code": "54", "reason": "Cartão vencido", "terminal_id": "T1988B"},
+      {"transaction_id": "TX1006", "days_ago": 2, "time": "08:30", "amount": 25.00, "brand": "Pix", "modality": "pix", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T1988A"},
+      {"transaction_id": "TX1007", "days_ago": 2, "time": "16:45", "amount": 1200.00, "brand": "Mastercard", "modality": "credito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T1988A"},
+      {"transaction_id": "TX1008", "days_ago": 3, "time": "10:10", "amount": 67.40, "brand": "Visa", "modality": "debito", "status": "recusada", "code": "55", "reason": "Senha inválida", "terminal_id": "T1988B"},
+      {"transaction_id": "TX1009", "days_ago": 4, "time": "13:00", "amount": 480.00, "brand": "Elo", "modality": "credito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T1988A"},
+      {"transaction_id": "TX1010", "days_ago": 5, "time": "09:15", "amount": 33.00, "brand": "Visa", "modality": "debito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T1988A"},
+      {"transaction_id": "TX1011", "days_ago": 6, "time": "18:20", "amount": 150.00, "brand": "Amex", "modality": "credito", "status": "recusada", "code": "57", "reason": "Transação não permitida para o cartão", "terminal_id": "T1988A"},
+      {"transaction_id": "TX1012", "days_ago": 8, "time": "15:35", "amount": 610.00, "brand": "Visa", "modality": "credito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T1988A"}
+    ]
+  },
+  "cliente2024": {
+    "name": "Ateliê Flor de Lis",
+    "plan": "Get Clássica",
+    "anticipation_fee_pct": 2.49,
+    "terminals": [
+      {"terminal_id": "T2024A", "model": "Getnet Clássica", "status": "sem_bobina", "connection": "chip", "signal": "medio", "paper": "sem_bobina", "last_seen_minutes": 5}
+    ],
+    "transactions": [
+      {"transaction_id": "TX2001", "days_ago": 0, "time": "10:00", "amount": 95.00, "brand": "Hipercard", "modality": "credito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T2024A"},
+      {"transaction_id": "TX2002", "days_ago": 1, "time": "14:30", "amount": 310.00, "brand": "Visa", "modality": "credito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T2024A"},
+      {"transaction_id": "TX2003", "days_ago": 1, "time": "15:10", "amount": 59.90, "brand": "Elo", "modality": "debito", "status": "recusada", "code": "05", "reason": "Transação não autorizada pelo emissor", "terminal_id": "T2024A"},
+      {"transaction_id": "TX2004", "days_ago": 3, "time": "11:45", "amount": 74.00, "brand": "Mastercard", "modality": "debito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T2024A"},
+      {"transaction_id": "TX2005", "days_ago": 4, "time": "17:05", "amount": 40.00, "brand": "Pix", "modality": "pix", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T2024A"},
+      {"transaction_id": "TX2006", "days_ago": 6, "time": "09:50", "amount": 820.00, "brand": "Mastercard", "modality": "credito", "status": "recusada", "code": "14", "reason": "Cartão inválido", "terminal_id": "T2024A"},
+      {"transaction_id": "TX2007", "days_ago": 9, "time": "16:00", "amount": 260.00, "brand": "Elo", "modality": "credito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T2024A"}
+    ]
+  }
+}
