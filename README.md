@@ -137,7 +137,7 @@ Os três diagramas detalhados (agentes, RAG, HITL) estão em [docs/ARCHITECTURE.
 
 | Fase | O que acontece | Código / dado |
 |---|---|---|
-| Ingestão | páginas do site Getnet Brasil viram trechos literais de 300–800 caracteres, cortados em parágrafo, com título, URL, data de coleta e SHA-256; fontes listadas | `src/app/ingest.py`, [docs/SOURCES.md](docs/SOURCES.md), [docs/SOURCES_SUPORTE.md](docs/SOURCES_SUPORTE.md) |
+| Ingestão | `python -m app.ingest` baixa as páginas de produto e suporte do site Getnet **Brasil** (só `site.getnet.com.br`/`getnet.com.br`; `getnet.net/pt` é Portugal e fica fora), extrai só o texto visível, remove menu e rodapé (linha repetida em metade das páginas) e grava trechos **literais** de 300–800 caracteres com título, URL, data de coleta e SHA-256 | `src/app/ingest.py`, [docs/SOURCES.md](docs/SOURCES.md), [docs/SOURCES_SUPORTE.md](docs/SOURCES_SUPORTE.md) |
 | Armazenamento | JSONL versionado no git em `data/knowledge/`; documento com injeção é descartado na carga (`poisoned_docs_dropped_total`); índice em memória recarregado quando o arquivo muda | `src/app/rag.py::load_docs` |
 | Busca | consulta expandida pelo glossário pt↔en → BM25 (k1 1,5, b 0,75, título com peso 2) ou híbrido (BM25 + embeddings por RRF k=60) → rerank do top-20 pelo Haiku | `src/app/rag.py`, `data/glossary.json` |
 | Portão | sem trecho acima de `COVERAGE_MIN_SCORE` → `insufficient` → o supervisor replaneja (pergunta da Getnet sem fonte → humano; `general` usa a web e nunca escala) | `src/app/agents.py::covered_hits` |

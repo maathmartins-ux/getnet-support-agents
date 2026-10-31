@@ -43,8 +43,8 @@ Regras que o desenho garante:
 ```mermaid
 flowchart LR
   subgraph Ingestão [Ingestão · src/app/ingest.py]
-    W[site Getnet Brasil<br/>páginas de produto e suporte] --> C[corte em parágrafo<br/>300–800 caracteres]
-    C --> META[título, URL, data de coleta,<br/>SHA-256, dedupe]
+    W[site.getnet.com.br<br/>páginas de produto e suporte] --> C[corte em parágrafo<br/>300–800 caracteres]
+    C --> META[título, URL, data de coleta,<br/>SHA-256; menu e rodapé fora]
   end
   subgraph Armazenamento [Armazenamento · data/knowledge/**.jsonl]
     META --> J[(JSONL versionado no git)]
