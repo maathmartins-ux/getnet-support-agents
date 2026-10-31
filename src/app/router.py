@@ -38,8 +38,10 @@ SCHEMA = {
 _HUMAN = re.compile(r"\b(atendente|humano|pessoa real|falar com algu[eé]m|human|representative|real person"
                     r"|operador|operator|live agent|gerente de conta|account manager)\b", re.IGNORECASE)
 # Getnet: pergunta geral, fora da base (clima, câmbio, cotação, notícia) → agente de conhecimento com busca web.
-_GENERAL = re.compile(r"\b(clima|tempo amanh[aã]|previs[aã]o do tempo|vai chover|chuva|temperatura|weather"
-                      r"|forecast|rain\w*|c[aâ]mbio|cota[cç][aã]o|exchange rate|d[oó]lar|dollar|euro|bitcoin"
+# Pergunta, não comentário: "What a rainy day, right?" é conversa; "vai chover?"/"will it rain?" pede dado.
+_GENERAL = re.compile(r"\b(clima|tempo amanh[aã]|previs[aã]o do tempo|vai chover|temperatura|weather"
+                      r"|forecast|(will|is) it (going to )?rain|c[aâ]mbio|cota[cç][aã]o|exchange rate"
+                      r"|d[oó]lar|dollar|euro|bitcoin"
                       r"|not[ií]cias?|news|placar|score)\b", re.IGNORECASE)
 # Problema na maquininha: estado do terminal/transação do lojista + manual de solução.
 _DEVICE = re.compile(r"\b(maquininha|m[aá]quina|terminal|pos|card machine|card reader|leitor)\b", re.IGNORECASE)
