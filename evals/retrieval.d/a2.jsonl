@@ -1,0 +1,43 @@
+{"question": "Como coloco o chip na maquininha?", "relevant": ["sup-duvidas-03"]}
+{"question": "My card machine won't connect, how do I insert the SIM chip?", "relevant": ["sup-duvidas-03"]}
+{"question": "O que é o chip Algar multioperadora?", "relevant": ["sup-duvidas-04"]}
+{"question": "Como ligo ou desligo minha máquina?", "relevant": ["sup-duvidas-31", "sup-operacional-01"]}
+{"question": "Como estornar uma venda feita hoje na maquininha?", "relevant": ["sup-operacional-06"]}
+{"question": "How do I refund a sale made today on the card machine?", "relevant": ["sup-operacional-06"]}
+{"question": "O que é contestação de vendas?", "relevant": ["sup-duvidas-32", "sup-operacional-02"]}
+{"question": "My customer disputed a charge with their bank, what is a chargeback?", "relevant": ["sup-chargeback-01"]}
+{"question": "Quais situações mais comuns levam ao chargeback?", "relevant": ["sup-chargeback-02"]}
+{"question": "Transaction decline error: transaction not authorized by the cardholder", "relevant": ["sup-duvidas-32", "sup-operacional-02"]}
+{"question": "Passei a mesma venda duas vezes no mesmo cartão, a segunda foi cancelada?", "relevant": ["sup-duvidas-02", "sup-get-smart-01"]}
+{"question": "Quero cancelar minha parceria com a Getnet, como faço?", "relevant": ["sup-duvidas-13", "sup-cancelamento-01"]}
+{"question": "Como o aluguel é cobrado depois do cancelamento da máquina?", "relevant": ["sup-duvidas-12", "sup-cancelamento-01"]}
+{"question": "Como cancelar uma venda da Get Smart feita em dias anteriores?", "relevant": ["sup-duvidas-01", "sup-get-smart-01"]}
+{"question": "Como cuidar da bateria da Get Smart?", "relevant": ["sup-duvidas-02", "sup-get-smart-02"]}
+{"question": "Troquei de celular, como passo o Get Tap para o aparelho novo?", "relevant": ["sup-get-tap-05"]}
+{"question": "Does Get Tap work on my phone? Which Android version?", "relevant": ["sup-duvidas-22", "sup-duvidas-23", "sup-get-tap-01", "sup-get-tap-02"]}
+{"question": "Quanto tempo um Pix recebido pode ficar bloqueado por suspeita de fraude?", "relevant": ["sup-pix-respostas-13"]}
+{"question": "O que é o MED do Pix?", "relevant": ["sup-pix-respostas-05"]}
+{"question": "Até quantos dias posso devolver um Pix recebido?", "relevant": ["sup-pix-respostas-12", "sup-pix-respostas-13", "sup-pix-respostas-14"]}
+{"question": "Fiz uma venda Pix e não imprimiu o comprovante", "relevant": ["sup-pix-04"]}
+{"question": "Como imprimir o resumo de vendas do dia anterior?", "relevant": ["sup-duvidas-34", "sup-operacional-04"]}
+{"question": "Onde baixo o manual de uso da minha maquininha Get Mini?", "relevant": ["sup-manual-maquinas-01"]}
+{"question": "Como solicitar bobinas para a maquininha?", "relevant": ["sup-app-getnet-03"]}
+{"question": "Em quantos dias recebo as vendas no débito e no crédito?", "relevant": ["sup-duvidas-55", "sup-pre-pago-01", "sup-pre-pago-06"]}
+{"question": "Alguém quer reivindicar minha chave Pix, como mantenho ela na Get Conta?", "relevant": ["sup-pix-respostas-08"]}
+{"question": "Um técnico apareceu sem agendamento querendo levar a máquina, o que faço?", "relevant": ["sup-seguranca-03"]}
+{"question": "Como falar com a ouvidoria da Getnet?", "relevant": ["sup-ouvidoria-01"]}
+{"question": "Como sacar meu FGTS pela maquininha Getnet?", "relevant": []}
+{"question": "A Getnet tem a maquininha Get Ultra 5G com impressora a laser?", "relevant": []}
+{"question": "Qual a taxa da maquininha do Mercado Pago?", "relevant": []}
+{"question": "Como abro uma conta corrente no Itaú?", "relevant": []}
+{"question": "Does Getnet offer a crypto wallet to receive Bitcoin?", "relevant": []}
+{"question": "A maquininha Getnet aceita pagamento por reconhecimento facial?", "relevant": []}
+{"question": "Como contratar empréstimo consignado do INSS pela Getnet?", "relevant": []}
+{"question": "O cartão Getnet Black dá acesso a sala VIP de aeroporto?", "relevant": []}
+{"question": "Como emitir boleto do Bradesco direto na maquininha Getnet?", "relevant": []}
+{"question": "Does the Getnet card machine print photos?", "relevant": []}
+{"question": "A Getnet vende seguro de carro?", "relevant": []}
+{"question": "Qual o prazo de recebimento da maquininha da Stone?", "relevant": []}
+{"question": "Como pagar a conta de luz da Enel na maquininha Getnet?", "relevant": []}
+{"question": "A Getnet tem maquininha em formato de relógio smartwatch?", "relevant": []}
+{"question": "How do I open a Nubank account with Getnet?", "relevant": []}

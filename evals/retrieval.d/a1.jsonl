@@ -1,0 +1,34 @@
+{"question": "What's the difference between the Get Clássica and the Get Smart?", "relevant": ["prod-todas-as-maquininhas-02", "prod-get-tap-02", "prod-get-tap-05"]}
+{"question": "Qual a diferença entre a Get Clássica e a Get Smart?", "relevant": ["prod-todas-as-maquininhas-02", "prod-get-tap-02", "prod-get-tap-05"]}
+{"question": "Do I need a bank account to receive my sales via Pix?", "relevant": ["prod-blog-pix-maquininha-03", "prod-blog-conta-digital-05", "prod-blog-conta-digital-03", "prod-todas-as-maquininhas-02"]}
+{"question": "Preciso de conta bancária para receber minhas vendas no Pix?", "relevant": ["prod-blog-pix-maquininha-03", "prod-blog-conta-digital-05", "prod-blog-conta-digital-03", "prod-todas-as-maquininhas-02"]}
+{"question": "How does receivables advance (antecipação) work with Getnet?", "relevant": ["prod-blog-antecipar-02", "prod-blog-antecipar-03", "prod-blog-antecipar-09", "prod-blog-antecipar-11", "prod-blog-antecipar-12"]}
+{"question": "Como funciona a antecipação de recebíveis na Getnet?", "relevant": ["prod-blog-antecipar-02", "prod-blog-antecipar-03", "prod-blog-antecipar-09", "prod-blog-antecipar-11", "prod-blog-antecipar-12"]}
+{"question": "How many installments can I split a sale into with the crediário?", "relevant": ["prod-crediario-01", "prod-crediario-03", "prod-blog-funcionalidades-maquininha-07", "prod-crediario-09"]}
+{"question": "Em quantas parcelas posso dividir uma venda no Crediário?", "relevant": ["prod-crediario-01", "prod-crediario-03", "prod-blog-funcionalidades-maquininha-07", "prod-crediario-09"]}
+{"question": "Can I sell through WhatsApp using the Payment Link?", "relevant": ["prod-blog-link-pagamento-02", "prod-blog-link-pagamento-03", "prod-link-de-pagamento-01", "prod-blog-link-pagamento-04"]}
+{"question": "Posso vender pelo WhatsApp usando o Link de Pagamento?", "relevant": ["prod-blog-link-pagamento-02", "prod-blog-link-pagamento-03", "prod-link-de-pagamento-01", "prod-blog-link-pagamento-04"]}
+{"question": "Meu celular é compatível com o Get Tap?", "relevant": ["prod-get-tap-05"]}
+{"question": "Which Android version do I need to use my phone as a card machine?", "relevant": ["prod-get-tap-05"]}
+{"question": "Como contratar o Get Tap?", "relevant": ["prod-blog-get-tap-13", "prod-blog-get-tap-14"]}
+{"question": "Como fazer uma venda pelo Get Tap no app?", "relevant": ["prod-blog-get-tap-15", "prod-blog-get-tap-16"]}
+{"question": "Is Get Tap as safe as a regular card machine?", "relevant": ["prod-blog-get-tap-08", "prod-blog-get-tap-09", "prod-blog-get-tap-10"]}
+{"question": "O que é Pix por aproximação?", "relevant": ["prod-blog-pix-aproximacao-03", "prod-blog-funcionalidades-maquininha-05"]}
+{"question": "How do I enable contactless Pix on my card machine?", "relevant": ["prod-blog-pix-aproximacao-08", "prod-blog-pix-aproximacao-09"]}
+{"question": "Quais formas de pagamento o comprador pode escolher no Link de Pagamento?", "relevant": ["prod-link-de-pagamento-02"]}
+{"question": "Como eu contrato o Crediário e qual a taxa?", "relevant": ["prod-crediario-07", "prod-crediario-08"]}
+{"question": "When do I get paid for a crediário sale?", "relevant": ["prod-crediario-02", "prod-crediario-10", "prod-blog-funcionalidades-maquininha-07"]}
+{"question": "Quem define o limite de parcelas e os juros do Crediário?", "relevant": ["prod-crediario-09"]}
+{"question": "Toda venda no cartão pode ser antecipada?", "relevant": ["prod-blog-antecipar-12"]}
+{"question": "Can I simulate the cost before advancing my receivables?", "relevant": ["prod-blog-antecipar-13", "prod-blog-antecipar-10"]}
+{"question": "Posso antecipar o valor da Reserva Financeira?", "relevant": ["prod-antecipacao-01"]}
+{"question": "Quais os benefícios da Get Conta?", "relevant": ["prod-blog-conta-digital-05", "prod-blog-conta-digital-03"]}
+{"question": "Does the Getnet digital account come with a card?", "relevant": ["prod-blog-conta-digital-05", "prod-conta-digital-01"]}
+{"question": "Quanto preciso faturar para não pagar aluguel da maquininha?", "relevant": ["prod-todas-as-maquininhas-02", "prod-get-tap-02", "prod-home-02", "prod-get-tap-05"]}
+{"question": "What is the currency converter feature on the card machine?", "relevant": ["prod-blog-funcionalidades-maquininha-03", "prod-blog-funcionalidades-maquininha-04"]}
+{"question": "Como funciona o estorno simplificado na maquininha?", "relevant": ["prod-blog-funcionalidades-maquininha-06"]}
+{"question": "What is the Get Store on the card machine?", "relevant": ["prod-blog-funcionalidades-maquininha-08"]}
+{"question": "Quanto custa guardar o cartão do cliente no Get Checkout?", "relevant": ["prod-getcheckout-04"]}
+{"question": "Can I integrate the Getnet TEF system with fuel pumps at a gas station?", "relevant": ["prod-tef-05"]}
+{"question": "Who is Tap on Phone for?", "relevant": ["prod-blog-tap-on-phone-02", "prod-blog-get-tap-04", "prod-blog-get-tap-05"]}
+{"question": "Como escolher a melhor maquininha para o meu negócio?", "relevant": ["prod-maquininha-de-cartao-01", "prod-maquininha-de-cartao-02", "prod-blog-melhor-maquininha-02", "prod-maquininha-de-cartao-05", "prod-blog-melhor-maquininha-06"]}
