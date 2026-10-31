@@ -83,5 +83,5 @@ Incidentes comuns, como confirmar e como responder. Cada seção corresponde a u
 
 - **Deploy:** `python scripts/check.py --docker` verde → `docker compose up -d --build` → `curl /health`
   (`data_files` > 0) → um `/chat` de fumaça.
-- **Rollback:** `git checkout <tag anterior> && docker compose up -d --build`. O SQLite fica em `/app/var/app.db` dentro do container: para o histórico sobreviver a `docker compose down`, monte um volume em `/app/var` (o compose do desafio não monta; ver README §9).
+- **Rollback:** `git checkout <tag anterior> && docker compose up -d --build`. O SQLite fica em `/app/var/app.db` dentro do container: para o histórico sobreviver a `docker compose down`, `docker-compose.yml` precisa montar um volume em `/app/var` (confira antes do rollback).
 - **Mudança de prompt ou modelo** é deploy: passa pelo gate do eval antes, nunca direto em produção.
