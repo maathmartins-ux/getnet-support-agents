@@ -30,7 +30,7 @@ from .schemas import Handoff, Source, ToolCall
 from .store import get_store
 
 # BM25 bruto abaixo disso = sem fonte. Padrão; o valor do desafio sai de `run_evals --calibrate-gate`.
-MIN_SCORE = 0.5
+MIN_SCORE = 8.378  # run_evals --calibrate-gate, corpus Getnet (31/10/2026 15:02): recusa 100% nos negativos
 # Híbrido: trecho sem termo em comum (sinônimo) só conta como fonte com cosseno >= MIN_COSINE E perto do
 # melhor cosseno da busca (COSINE_MARGIN). Medido no corpus de exemplo com o MiniLM multilíngue (30/10/2026):
 # sinônimo certo 0,44; vizinhos de pergunta bem respondida 0,50–0,53 com o melhor em 0,75; pergunta sem

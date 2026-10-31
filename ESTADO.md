@@ -1,5 +1,5 @@
-fase: ondas fundidas (14:55) → portão + readme; gate offline 82,5% < 90% (FAIL), CI vai vermelho
-último marco: onda 1: o, a1, a2, b, c1, e, c2, d fundidos (posse OK em todos)
+fase: entrega (15:08) — último commit
+último marco: g3: portão calibrado no default (MIN_SCORE 8.378); handoff ALL 80,2% → 91,4%, replan handoff 10% → 80%
 forks integrados: o, a1, a2, b, c1, e, c2, d
-pendências: replan handoff 10% (portão de cobertura sem calibrar), heldout intent 62,5%, memória 61,5%, hard 54,8%; eval ao vivo e juiz NÃO rodaram (máquina lenta: suíte 6 min)
-próximo marco: portão: calibrate-gate → COVERAGE_MIN_SCORE; readme: fill_readme
+pendências: gate de intent 82,5% < 90% (FAIL → CI vermelho); heldout intent 62,5%; parallel 50%; memória 61,5%; ao vivo e juiz NÃO rodaram; check.py --docker NÃO rodou
+próximo marco: nenhum (relógio fecha 15:10)

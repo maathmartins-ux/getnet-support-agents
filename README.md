@@ -220,29 +220,29 @@ Modo: `in-process` · provedor `offline`
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | cases | 10 | 20 | 12 | 10 | 1 | 54 | 13 | 42 | 34 | 24 | 220 |
 | intent_acc | 90.0 [IC95 59.6–98.2; n=10] | 100.0 [IC95 83.9–100.0; n=20] | 50.0 [IC95 25.4–74.6; n=12] | 80.0 [IC95 49.0–94.3; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 83.3 [IC95 71.3–91.0; n=54] | 61.5 [IC95 35.5–82.3; n=13] | 54.8 [IC95 39.9–68.8; n=42] | 88.2 [IC95 73.4–95.3; n=34] | 62.5 [IC95 42.7–78.8; n=24] | 75.0 [IC95 68.9–80.3; n=220] |
-| handoff_acc | 100.0 [IC95 72.2–100.0; n=10] | 10.0 [IC95 2.8–30.1; n=20] | 91.7 [IC95 64.6–98.5; n=12] | 100.0 [IC95 72.2–100.0; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 100.0 [IC95 89.3–100.0; n=32] | 100.0 [IC95 34.2–100.0; n=2] | 80.0 [IC95 37.6–96.4; n=5] | 100.0 [IC95 34.2–100.0; n=2] | 86.4 [IC95 66.7–95.3; n=22] | 80.2 [IC95 72.0–86.4; n=116] |
-| handoff_outcome_acc | 100.0 [IC95 72.2–100.0; n=10] | 10.0 [IC95 2.8–30.1; n=20] | 91.7 [IC95 64.6–98.5; n=12] | 100.0 [IC95 72.2–100.0; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 100.0 [IC95 89.3–100.0; n=32] | 100.0 [IC95 34.2–100.0; n=2] | 80.0 [IC95 37.6–96.4; n=5] | 100.0 [IC95 34.2–100.0; n=2] | 86.4 [IC95 66.7–95.3; n=22] | 80.2 [IC95 72.0–86.4; n=116] |
+| handoff_acc | 100.0 [IC95 72.2–100.0; n=10] | 80.0 [IC95 58.4–91.9; n=20] | 91.7 [IC95 64.6–98.5; n=12] | 100.0 [IC95 72.2–100.0; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 96.9 [IC95 84.3–99.4; n=32] | 100.0 [IC95 34.2–100.0; n=2] | 100.0 [IC95 56.6–100.0; n=5] | 100.0 [IC95 34.2–100.0; n=2] | 81.8 [IC95 61.5–92.7; n=22] | 91.4 [IC95 84.9–95.3; n=116] |
+| handoff_outcome_acc | 100.0 [IC95 72.2–100.0; n=10] | 80.0 [IC95 58.4–91.9; n=20] | 91.7 [IC95 64.6–98.5; n=12] | 100.0 [IC95 72.2–100.0; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 96.9 [IC95 84.3–99.4; n=32] | 100.0 [IC95 34.2–100.0; n=2] | 100.0 [IC95 56.6–100.0; n=5] | 100.0 [IC95 34.2–100.0; n=2] | 81.8 [IC95 61.5–92.7; n=22] | 91.4 [IC95 84.9–95.3; n=116] |
 | blocked_acc | — | — | — | — | — | — | — | — | 100.0 [IC95 86.7–100.0; n=25] | 0.0 [IC95 0.0–65.8; n=2] | 92.6 [IC95 76.6–97.9; n=27] |
-| language_acc | 40.0 [IC95 16.8–68.7; n=10] | 65.0 [IC95 43.3–81.9; n=20] | 66.7 [IC95 39.1–86.2; n=12] | 90.0 [IC95 59.6–98.2; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 75.9 [IC95 63.1–85.4; n=54] | 84.6 [IC95 57.8–95.7; n=13] | — | — | 77.3 [IC95 56.6–89.9; n=22] | 73.2 [IC95 65.4–79.8; n=142] |
+| language_acc | 40.0 [IC95 16.8–68.7; n=10] | 100.0 [IC95 83.9–100.0; n=20] | 66.7 [IC95 39.1–86.2; n=12] | 90.0 [IC95 59.6–98.2; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 77.8 [IC95 65.1–86.8; n=54] | 92.3 [IC95 66.7–98.6; n=13] | — | — | 90.9 [IC95 72.2–97.5; n=22] | 81.7 [IC95 74.5–87.2; n=142] |
 | tools_acc | 100.0 [IC95 43.9–100.0; n=3] | — | 50.0 [IC95 25.4–74.6; n=12] | 80.0 [IC95 49.0–94.3; n=10] | — | 66.7 [IC95 43.7–83.7; n=18] | 0.0 [IC95 0.0–49.0; n=4] | 60.0 [IC95 31.3–83.2; n=10] | 50.0 [IC95 15.0–85.0; n=4] | 25.0 [IC95 7.1–59.1; n=8] | 56.5 [IC95 44.8–67.6; n=69] |
 | pending_action_acc | — | — | — | 80.0 [IC95 49.0–94.3; n=10] | — | — | — | 100.0 [IC95 34.2–100.0; n=2] | 50.0 [IC95 9.5–90.5; n=2] | — | 78.6 [IC95 52.4–92.4; n=14] |
-| replanned_acc | — | 10.0 [IC95 2.8–30.1; n=20] | — | — | — | — | — | — | — | — | 10.0 [IC95 2.8–30.1; n=20] |
+| replanned_acc | — | 80.0 [IC95 58.4–91.9; n=20] | — | — | — | — | — | — | — | — | 80.0 [IC95 58.4–91.9; n=20] |
 | no_leak_acc | — | — | — | — | — | — | — | — | 100.0 [IC95 51.0–100.0; n=4] | — | 100.0 [IC95 51.0–100.0; n=4] |
 | numbers_acc | 100.0 [IC95 72.2–100.0; n=10] | 100.0 [IC95 83.9–100.0; n=20] | 100.0 [IC95 75.8–100.0; n=12] | 100.0 [IC95 72.2–100.0; n=10] | 100.0 [IC95 20.7–100.0; n=1] | 100.0 [IC95 93.4–100.0; n=54] | 84.6 [IC95 57.8–95.7; n=13] | 100.0 [IC95 91.6–100.0; n=42] | 100.0 [IC95 70.1–100.0; n=9] | 100.0 [IC95 86.2–100.0; n=24] | 99.0 [IC95 96.3–99.7; n=195] |
 | language_undetected | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | recall@3 | — | — | — | — | — | — | — | — | — | — | — |
 | mrr | — | — | — | — | — | — | — | — | — | — | — |
-| p50_ms | 906.0 | 588.5 | 855.0 | 306.3 | 591.9 | 594.1 | 629.6 | 213.9 | 57.4 | 228.8 | 435.6 |
-| p95_ms | 13355.9 | 1257.3 | 7329.2 | 817.2 | 591.9 | 2071.2 | 8628.4 | 515.4 | 423.9 | 639.7 | 1702.3 |
+| p50_ms | 620.4 | 790.8 | 510.3 | 468.1 | 583.8 | 464.1 | 878.9 | 372.1 | 104.9 | 358.4 | 427.9 |
+| p95_ms | 8697.0 | 3976.3 | 1282.9 | 733.6 | 583.8 | 1209.8 | 14120.8 | 738.9 | 424.0 | 591.0 | 1291.0 |
 | cost_usd | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |
 | crashes | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 Gate (splits approval, guardrail, human, memory, official, official-var, parallel, replan): intent 82.5% [IC95 75.7–87.7; n=154] (mínimo 90%) → **FAIL**. Medidos fora do gate: hard, heldout. Isolamento: `db_per_case`.
 
-Falhas por checagem × split: blocked heldout 2 · handoff hard 1, heldout 3, parallel 1, replan 18 · handoff_outcome hard 1, heldout 3, parallel 1, replan 18 · intent approval 2, guardrail 4, hard 19, heldout 9, memory 5, official 1, official-var 9, parallel 6 · language approval 1, heldout 5, memory 2, official 6, official-var 13, parallel 4, replan 7 · numbers memory 2 · pending_action approval 2, guardrail 1 · replanned replan 18 · tools approval 2, guardrail 2, hard 4, heldout 6, memory 4, official-var 6, parallel 6
+Falhas por checagem × split: blocked heldout 2 · handoff heldout 4, official-var 1, parallel 1, replan 4 · handoff_outcome heldout 4, official-var 1, parallel 1, replan 4 · intent approval 2, guardrail 4, hard 19, heldout 9, memory 5, official 1, official-var 9, parallel 6 · language approval 1, heldout 2, memory 1, official 6, official-var 12, parallel 4 · numbers memory 2 · pending_action approval 2, guardrail 1 · replanned replan 4 · tools approval 2, guardrail 2, hard 4, heldout 6, memory 4, official-var 6, parallel 6
 Confusão de intenção (esperada → obtida): blocked → knowledge 1, support 1 · general → knowledge 3, support 1 · human_request → knowledge 1 · knowledge → support 6, general 2, human_request 1, multi 2 · multi → general 3, knowledge 3, support 3, human_request 1 · support → knowledge 8, general 2, multi 2, troubleshoot 1 · troubleshoot → support 4, knowledge 10
 
-Portão sem fonte: limiar efetivo 0.5 (MIN_SCORE) → responde 72.1% [IC95 60.4–81.3; n=68] dos com fonte, recusa 0.0% [IC95 0.0–17.6; n=18] dos sem fonte · recomendado 8.378 → responde 52.9% [IC95 41.2–64.3; n=68], recusa 88.9% [IC95 67.2–96.9; n=18] (68 com fonte, 18 sem; 0 sem fonte fora da conta por não chegarem ao agente de conhecimento; critério: max pos_answered com neg_refused >= 0.85; empate → menor limiar)
+Portão sem fonte: limiar efetivo 8.378 (MIN_SCORE) → responde 52.9% [IC95 41.2–64.3; n=68] dos com fonte, recusa 88.9% [IC95 67.2–96.9; n=18] dos sem fonte · recomendado 8.378 → responde 52.9% [IC95 41.2–64.3; n=68], recusa 88.9% [IC95 67.2–96.9; n=18] (68 com fonte, 18 sem; 0 sem fonte fora da conta por não chegarem ao agente de conhecimento; critério: max pos_answered com neg_refused >= 0.85; empate → menor limiar)
 
 Retrieval ativo (bm25, `evals/retrieval.jsonl`): Recall@3 **0.57** · MRR **0.618** · hit@3 0.721 [IC95 60.4–81.3; n=68] (68 perguntas)
 <!-- eval:end -->
@@ -264,10 +264,13 @@ _Juiz não rodado._
 <!-- replan:begin -->
 | fonte | casos | replanned_acc | handoff_acc | handoff_outcome_acc | intent_acc |
 |---|---:|---:|---:|---:|---:|
-| offline | 20 | 10.0 [IC95 2.8–30.1; n=20] | 10.0 [IC95 2.8–30.1; n=20] | 10.0 [IC95 2.8–30.1; n=20] | 100.0 [IC95 83.9–100.0; n=20] |
+| offline | 20 | 80.0 [IC95 58.4–91.9; n=20] | 80.0 [IC95 58.4–91.9; n=20] | 80.0 [IC95 58.4–91.9; n=20] | 100.0 [IC95 83.9–100.0; n=20] |
 
-- `replan-13` (offline): faq:no_source->escalation
-- `replan-17` (offline): faq:no_source->escalation
+- `replan-02` (offline): faq:no_source->escalation
+- `replan-03` (offline): faq:no_source->escalation
+- `replan-04` (offline): faq:no_source->escalation
+- `replan-05` (offline): faq:no_source->escalation
+- `replan-06` (offline): faq:no_source->escalation
 <!-- replan:end -->
 
 ## 6. Spec e rastreabilidade
@@ -353,8 +356,10 @@ Spec em [docs/SPEC.md](docs/SPEC.md), commitada antes do código. ADRs em [docs/
 | 14:59:38 | 46 | onda 3: fork/c2 (42 rótulos do juiz) integrado pelo maestro |
 | 14:59:42 | 46 | onda 3: fork/c1 (pronto, 127 casos) integrado pelo maestro |
 | 15:01:13 | 47 | onda 1: forks o, a1, a2, b, c1, e, c2, d integrados (posse OK); eval offline intent 82,5% (gate 90% FAIL), official 90%, heldout 62,5% |
+| 15:03:42 | 50 | portão: COVERAGE_MIN_SCORE=8.378 por --calibrate-gate (recusa 100% nos negativos, n=18); compose em AUTH_MODE=demo |
+| 15:03:43 | 50 | readme: fill_readme (eval, replan, linha do tempo); sem marcadores pendentes |
 
-Do primeiro ao último commit: **47 min**.
+Do primeiro ao último commit: **50 min**.
 <!-- timeline:end -->
 
 ## 8. Scaffold declarado (kit) e o que foi feito no relógio
@@ -387,12 +392,12 @@ regras do router e do supervisor) foi escrito no relógio. A medida, tirada do g
 | `ESTADO.md` | 0 | 5 | 0 | 0 |
 | `Makefile` | 23 | 0 | 0 | 0 |
 | `OWNERSHIP.json` | 63 | 0 | 0 | 0 |
-| `README.md` | 137 | 168 | 33 | 1 |
+| `README.md` | 137 | 320 | 33 | 1 |
 | `data` | 34 | 59 | 7 | 1 |
 | `data/crm` | 0 | 43 | 0 | 0 |
 | `data/intent_examples.d` | 0 | 52 | 0 | 0 |
 | `data/knowledge` | 0 | 288 | 0 | 0 |
-| `docker-compose.yml` | 11 | 0 | 0 | 0 |
+| `docker-compose.yml` | 11 | 3 | 1 | 1 |
 | `docs` | 32 | 854 | 16 | 1 |
 | `docs/adr` | 20 | 136 | 0 | 0 |
 | `evals` | 936 | 59 | 12 | 1 |
@@ -410,7 +415,7 @@ regras do router e do supervisor) foi escrito no relógio. A medida, tirada do g
 | `tests` | 3433 | 934 | 0 | 0 |
 | `tests/fixtures` | 49 | 0 | 0 | 0 |
 
-Total: **9771** linhas do kit (commit `f0e500e`) e **25586** escritas no relógio (72% do total). Arquivos do kit alterados no relógio: 15.
+Total: **9771** linhas do kit (commit `f0e500e`) e **25741** escritas no relógio (72% do total). Arquivos do kit alterados no relógio: 16.
 <!-- kit:end -->
 
 ## 9. Limitações e próximos passos
