@@ -25,14 +25,23 @@ from .llm import LLMError, get_llm
 from .observability import METRICS, span
 
 # intent → plano inicial. "multi" = duas perguntas independentes no mesmo turno → rodam em paralelo.
+# Getnet: faq = conhecimento (RAG do site); general = pergunta geral (clima, câmbio) pelo mesmo agente com busca
+# web; records = dados do lojista (liquidação, transações, terminal); troubleshoot = problema na maquininha:
+# estado do terminal/transação (records) + manual de solução (faq), em paralelo.
+# Intents da SPEC; os agentes mantêm os nomes do kit (faq = Knowledge, records = Customer Support; ADR 0003).
 PLANS = {
-    "faq": ["faq"],
-    "records": ["records"],
+    "knowledge": ["faq"],
+    "general": ["faq"],
+    "support": ["records"],
+    "troubleshoot": ["records", "faq"],
     "multi": ["faq", "records"],
     "human_request": ["escalation"],
 }
-# Status != ok → próximo agente. Sem fonte ou ferramenta quebrada termina em humano.
-FALLBACK = {"faq": "escalation", "records": "escalation"}
+# Status != ok → próximo agente. Sem fonte termina em humano; ferramenta quebrada tenta o conhecimento antes
+# (SPEC: "erro de tool → tenta knowledge → humano").
+FALLBACK = {"faq": "escalation", "records": "faq"}
+# Intents que nunca abrem caso humano por falta de fonte: clima e câmbio não são problema de atendimento.
+NO_ESCALATION = {"general"}
 # Transições permitidas (de → para). None = início. Escalation é terminal.
 ALLOWED = {None: {"faq", "records", "escalation"}, "faq": {"records", "escalation"},
            "records": {"faq", "escalation"}, "escalation": set()}
@@ -110,15 +119,17 @@ def next_batch(queue: list[str], budget: int) -> list[str]:
     return batch
 
 
-def next_step(result: AgentResult, done: list[str]) -> str | None:
+def next_step(result: AgentResult, done: list[str], intent: str | None = None) -> str | None:
     nxt = FALLBACK.get(result.agent, "escalation")
+    if nxt == "escalation" and intent in NO_ESCALATION:
+        return None
     return None if nxt in done or nxt not in ALLOWED.get(result.agent, set()) else nxt
 
 
 def run_table(plan: list[str], ctx: Context, confidence: float = 1.0) -> Outcome:
     out = Outcome()
     queue = list(plan)
-    if confidence < LOW_CONFIDENCE and queue and "escalation" not in queue:
+    if confidence < LOW_CONFIDENCE and queue and "escalation" not in queue and ctx.intent not in NO_ESCALATION:
         queue.append("escalation")
         ctx.handoff_reason = "low_confidence"
         out.replans.append(f"router:low_confidence({confidence:.2f})->escalation")
@@ -130,7 +141,7 @@ def run_table(plan: list[str], ctx: Context, confidence: float = 1.0) -> Outcome
         for name, result in zip(batch, results, strict=True):
             if result.status == "ok":
                 continue
-            nxt = next_step(result, out.route)
+            nxt = next_step(result, out.route, ctx.intent)
             if not nxt or nxt in queue:  # já agendado por outro agente do mesmo lote
                 continue
             ctx.handoff_reason = f"{name}_{result.reason or result.status}"
@@ -161,7 +172,8 @@ def run_llm(plan: list[str], ctx: Context, llm) -> Outcome:
         approved: list[tuple] = []  # (bloco, agente)
         for block in blocks:
             name = _TOOL_TO_AGENT.get(block.name)
-            if name is None or name not in ALLOWED[last] or len(out.route) + len(approved) >= MAX_STEPS:
+            if name is None or name not in ALLOWED[last] or len(out.route) + len(approved) >= MAX_STEPS \
+                    or (name == "escalation" and ctx.intent in NO_ESCALATION):
                 verdicts[block.id] = {"type": "tool_result", "tool_use_id": block.id, "is_error": True,
                                       "content": f"transição não permitida: {last}->{block.name}"}
                 continue
