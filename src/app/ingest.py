@@ -37,7 +37,17 @@ PRODUCT_PAGES = {
     "getcheckout": "https://site.getnet.com.br/getcheckout/",
     "tef": "https://site.getnet.com.br/tef/solucao-tef/",
     "home": "https://site.getnet.com.br/",
-    "ofertas": "https://site.getnet.com.br/ofertas-maquininha-de-cartao-getnet-2/",
+    # Artigos do blog Getnet BR sobre os mesmos produtos (detalhe que a página de venda não traz).
+    "blog-melhor-maquininha": "https://site.getnet.com.br/melhor-maquininha-para-o-seu-negocio/",
+    "blog-funcionalidades-maquininha": "https://site.getnet.com.br/5-funcionalidades-da-maquininha-getnet-para-vender-mais/",
+    "blog-tap-on-phone": "https://site.getnet.com.br/tap-on-phone-maquininha-no-celular/",
+    "blog-get-tap": "https://site.getnet.com.br/get-tap-maquininha-de-cartao/",
+    "blog-pix-maquininha": "https://site.getnet.com.br/pix-na-maquininha-getnet/",
+    "blog-pix-aproximacao": "https://site.getnet.com.br/pix-por-aproximacao/",
+    "blog-link-pagamento": "https://site.getnet.com.br/link-de-pagamento-getnet/",
+    "blog-whatsapp": "https://site.getnet.com.br/vender-pelo-whatsapp/",
+    "blog-antecipar": "https://site.getnet.com.br/quando-vale-a-pena-antecipar-as-suas-vendas-no-cartao/",
+    "blog-conta-digital": "https://site.getnet.com.br/conta-digital-getnet/",
 }
 
 SKIP_TAGS = {"script", "style", "noscript", "svg", "header", "footer", "nav", "template", "iframe", "form"}
