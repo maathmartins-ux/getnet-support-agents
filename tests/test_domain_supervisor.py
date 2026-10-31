@@ -36,7 +36,7 @@ def test_faq_no_source_escalates(monkeypatch):
     assert out.route == ["faq", "escalation"] and out.replans == ["faq:no_source->escalation"]
 
 
-def test_troubleshoot_runs_both_in_one_batch(monkeypatch):
+def test_troubleshoot_runs_records_then_faq(monkeypatch):
     batches = []
     real = supervisor.run_batch
 
@@ -49,7 +49,7 @@ def test_troubleshoot_runs_both_in_one_batch(monkeypatch):
     monkeypatch.setitem(supervisor.AGENTS, "faq", lambda c: AgentResult("faq", "ok", text="reinicie"))
     monkeypatch.setenv("SUPERVISOR_PARALLEL", "1")
     out = supervisor.run(supervisor.PLANS["troubleshoot"], ctx("A maquininha não conecta", "troubleshoot"))
-    assert out.route == ["records", "faq"] and batches[0] == ["records", "faq"]
+    assert out.route == ["records", "faq"] and batches == [["records"], ["faq"]]  # DEPENDS: faq lê o terminal
 
 
 def test_troubleshoot_tool_error_escalates_once(monkeypatch):

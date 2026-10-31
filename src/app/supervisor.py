@@ -46,7 +46,8 @@ NO_ESCALATION = {"general"}
 ALLOWED = {None: {"faq", "records", "escalation"}, "faq": {"records", "escalation"},
            "records": {"faq", "escalation"}, "escalation": set()}
 # Quem precisa dos fatos de quem (não roda no mesmo lote). Ex. de desafio: {"knowledge": {"support"}}.
-DEPENDS: dict[str, set[str]] = {}
+# Getnet: o conhecimento usa o estado do terminal/transação lido pelo suporte (troubleshoot = records → faq).
+DEPENDS: dict[str, set[str]] = {"faq": {"records"}}
 SEQUENTIAL = {"escalation"}  # sempre sozinho e depois dos outros: lê o motivo de quem falhou
 MAX_STEPS = 4  # teto de chamadas de agente por turno (plano de 2 + replan + escalonamento)
 LOW_CONFIDENCE = 0.4
