@@ -20,7 +20,7 @@ from app.schemas import ChatRequest
 from app.tools import TOOLS
 
 client = TestClient(app)
-OWNER, OTHER = "cliente1988", "cliente2000"
+OWNER, OTHER = "cliente1988", "cliente2024"
 CALLS: list[dict] = []
 
 

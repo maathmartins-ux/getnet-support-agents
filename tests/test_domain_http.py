@@ -137,7 +137,7 @@ def test_revoked_token_is_rejected():
 
 # --- identidade, posse e limites -------------------------------------------------------------------
 def test_token_identity_wins_over_body_user_id():
-    body = client.post("/chat", json={"message": SCENARIOS[2], "user_id": "cliente2000"},
+    body = client.post("/chat", json={"message": SCENARIOS[2], "user_id": "cliente2024"},
                        headers=auth(issue_token(USER))).json()
     assert body["user_id"] == USER
 
@@ -145,7 +145,7 @@ def test_token_identity_wins_over_body_user_id():
 def test_conversation_of_other_merchant_is_404():
     conv = client.post("/chat", json=MSG, headers=auth(issue_token(USER))).json()["conversation_id"]
     assert client.get(f"/conversations/{conv}", headers=auth(issue_token(USER))).status_code == 200
-    assert client.get(f"/conversations/{conv}", headers=auth(issue_token("cliente2000"))).status_code == 404
+    assert client.get(f"/conversations/{conv}", headers=auth(issue_token("cliente2024"))).status_code == 404
 
 
 def test_rate_limit_returns_429_with_retry_after(monkeypatch):
