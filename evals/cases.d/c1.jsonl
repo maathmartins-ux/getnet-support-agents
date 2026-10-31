@@ -77,3 +77,21 @@
 {"id": "c1-hard-10", "split": "hard", "user_id": "cliente1988", "message": "preciso de conta pra pix ou n?", "expect": {"intent": "knowledge"}}
 {"id": "c1-hard-11", "split": "hard", "user_id": "cliente1988", "message": "is it gonna rain in POA tmrw", "expect": {"intent": "general"}}
 {"id": "c1-hard-12", "split": "hard", "user_id": "cliente1988", "message": "parcelo em qts vezes no crediario", "expect": {"intent": "knowledge"}}
+{"id": "c1-official-var-40", "split": "official-var", "user_id": "cliente1988", "message": "Which Getnet card machine works without a cell phone?", "expect": {"intent": "knowledge", "language": "en", "handoff": false}}
+{"id": "c1-official-var-41", "split": "official-var", "user_id": "cliente1988", "message": "A Get Smart aceita pagamento por aproximação?", "expect": {"intent": "knowledge", "language": "pt", "handoff": false}}
+{"id": "c1-official-var-42", "split": "official-var", "user_id": "cliente1988", "message": "Qual o prazo para receber vendas no crédito à vista?", "expect": {"intent": "knowledge", "language": "pt", "handoff": false}}
+{"id": "c1-official-var-43", "split": "official-var", "user_id": "cliente1988", "message": "Does the Payment Link accept installments?", "expect": {"intent": "knowledge", "language": "en", "handoff": false}}
+{"id": "c1-official-var-44", "split": "official-var", "user_id": "cliente1988", "message": "O que é o Get Clássica e para quem ela serve?", "expect": {"intent": "knowledge", "language": "pt", "handoff": false}}
+{"id": "c1-official-var-45", "split": "official-var", "user_id": "cliente1988", "message": "What's the weather like in Salvador today?", "expect": {"intent": "general", "language": "en", "handoff": false}}
+{"id": "c1-official-var-46", "split": "official-var", "user_id": "cliente1988", "message": "Qual a cotação do dólar turismo agora?", "expect": {"intent": "general", "language": "pt", "handoff": false}}
+{"id": "c1-official-var-47", "split": "official-var", "user_id": "cliente1988", "message": "Qual é o meu plano e a minha conta de recebimento?", "expect": {"intent": "support", "language": "pt", "tools": ["get_merchant_profile"]}}
+{"id": "c1-official-var-48", "split": "official-var", "user_id": "cliente1988", "message": "What Pix key is registered on my account?", "expect": {"intent": "support", "language": "en", "tools": ["get_merchant_profile"]}}
+{"id": "c1-official-var-49", "split": "official-var", "user_id": "cliente1988", "message": "Quais maquininhas estão cadastradas no meu nome e estão online?", "expect": {"intent": "support", "language": "pt", "tools": ["get_terminal_status"]}}
+{"id": "c1-official-var-50", "split": "official-var", "user_id": "cliente1988", "message": "Is my terminal online right now?", "expect": {"intent": "support", "language": "en", "tools": ["get_terminal_status"]}}
+{"id": "c1-official-var-51", "split": "official-var", "user_id": "cliente1988", "message": "Teve venda negada hoje na minha loja?", "expect": {"intent": "support", "language": "pt", "tools": ["get_transactions"]}}
+{"id": "c1-official-var-52", "split": "official-var", "user_id": "cliente1988", "message": "A tela da máquina fica congelada no logo", "expect": {"intent": "troubleshoot", "language": "pt"}}
+{"id": "c1-official-var-53", "split": "official-var", "user_id": "cliente1988", "message": "The contactless payment doesn't work on my machine", "expect": {"intent": "troubleshoot", "language": "en"}}
+{"id": "c1-official-var-54", "split": "official-var", "user_id": "cliente1988", "message": "Não aparece a opção de parcelar na maquininha", "expect": {"intent": "troubleshoot", "language": "pt"}}
+{"id": "c1-official-var-55", "split": "official-var", "user_id": "cliente1988", "message": "Quero registrar uma reclamação com um supervisor humano", "expect": {"intent": "human_request", "language": "pt", "handoff": true}}
+{"id": "c1-parallel-09", "split": "parallel", "user_id": "cliente1988", "message": "Qual a taxa de antecipação e quanto tenho a receber amanhã?", "expect": {"intent": "multi", "language": "pt", "tools": ["get_settlements"], "handoff": false}}
+{"id": "c1-parallel-10", "split": "parallel", "user_id": "cliente1988", "message": "Is the Get Smart better than the Clássica? Also, are my terminals online?", "expect": {"intent": "multi", "language": "en", "tools": ["get_terminal_status"], "handoff": false}}
