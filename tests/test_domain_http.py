@@ -174,3 +174,25 @@ def test_pii_in_request_never_echoes_in_response():
                     headers=auth(issue_token(USER)))
     blob = json.dumps(r.json(), ensure_ascii=False)
     assert r.status_code == 200 and cpf not in blob and card not in blob and "4111111111111111" not in blob
+
+
+# --- EXTRA: carga leve ---------------------------------------------------------------------------
+def test_load_50_concurrent_requests_all_ok_and_p95_reported(domain_data, capsys):
+    """50 POST /chat simultâneos (10 cenários × 5): nenhum 5xx, nenhuma corrida no SQLite, p95 impresso."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    h = auth(issue_token(USER))
+
+    def one(i: int) -> tuple[int, float]:
+        t0 = time.perf_counter()
+        r = client.post("/chat", json={"message": SCENARIOS[i % 10]}, headers=h)
+        return r.status_code, (time.perf_counter() - t0) * 1000
+
+    with ThreadPoolExecutor(max_workers=50) as pool:
+        results = list(pool.map(one, range(50)))
+    codes = [c for c, _ in results]
+    ms = sorted(m for _, m in results)
+    p50, p95 = ms[len(ms) // 2], ms[int(len(ms) * 0.95) - 1]
+    with capsys.disabled():
+        print(f"\n[carga] n=50 concorrência=50 p50={p50:.0f} ms p95={p95:.0f} ms max={ms[-1]:.0f} ms")
+    assert codes == [200] * 50, codes
