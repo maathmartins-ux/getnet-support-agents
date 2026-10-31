@@ -13,7 +13,7 @@ from app.actions import confirm_action, decide_action, run_tool, tool_specs
 
 TODAY = date(2026, 10, 31)
 OWNERS = ("cliente1988", "cliente2024")
-READS = ("get_receivables_schedule", "get_sales_summary", "list_transactions", "get_terminal_status")
+READS = ("get_settlements", "get_sales_summary", "get_transactions", "get_terminal_status")
 
 
 @pytest.fixture(autouse=True)
@@ -48,12 +48,12 @@ def test_dates_are_relative_to_today(monkeypatch):
 # --- contrato comum --------------------------------------------------------------------------
 def test_specs_valid_and_high_risk_set():
     names = {s["name"] for s in tool_specs()}
-    assert set(READS) | {"restart_terminal", "request_anticipation", "contest_transaction"} <= names
+    assert set(READS) | {"restart_terminal", "request_anticipation", "open_chargeback"} <= names
     for name, t in tools.DOMAIN_TOOLS.items():
         assert t["input_schema"]["type"] == "object" and t["input_schema"]["additionalProperties"] is False
         assert t["description"] and callable(t["fn"]), name
     risk = {n: t.get("risk", "normal") for n, t in tools.DOMAIN_TOOLS.items() if t["write"]}
-    assert risk == {"restart_terminal": "normal", "request_anticipation": "high", "contest_transaction": "high"}
+    assert risk == {"restart_terminal": "normal", "request_anticipation": "high", "open_chargeback": "high"}
 
 
 @pytest.mark.parametrize("name", READS)
@@ -70,7 +70,7 @@ def test_reads_ok(name, user):
 
 
 def test_user_id_from_model_is_ignored():
-    result, call = run_tool("list_transactions", {"user_id": "cliente2024"}, "cliente1988")
+    result, call = run_tool("get_transactions", {"user_id": "cliente2024"}, "cliente1988")
     ids = {t["transaction_id"] for t in result["data"]["transactions"]}
     assert ids and all(i.startswith("TX1") for i in ids) and "user_id" not in call.args
 
@@ -181,7 +181,7 @@ def test_contest_other_owner_same_as_missing():
 
 def test_approved_contest_of_declined_never_executes():
     """Chargeback de recusada (falha da v3): mesmo com o operador aprovando, a execução recusa."""
-    result, _ = run_tool("contest_transaction", {"transaction_id": "TX1002"}, "cliente1988")
+    result, _ = run_tool("open_chargeback", {"transaction_id": "TX1002"}, "cliente1988")
     assert result["risk"] == "high" and result["args"] == {"transaction_id": "TX1002"}
     confirm_action(result["action_id"], "cliente1988")
     done = decide_action(result["action_id"], "op1", approve=True)
@@ -192,16 +192,35 @@ def test_approved_contest_of_declined_never_executes():
 def test_eligibility_follows_agents_eligible_status(monkeypatch):
     from app import agents
 
-    monkeypatch.setitem(agents.ELIGIBLE_STATUS, "contest_transaction", {"aprovada"})
+    monkeypatch.setitem(agents.ELIGIBLE_STATUS, "open_chargeback", {"aprovada"})
     assert tools._contest("cliente1988", "TX1002")["error"] == "not_eligible"
-    monkeypatch.setitem(agents.ELIGIBLE_STATUS, "contest_transaction", set())
+    monkeypatch.setitem(agents.ELIGIBLE_STATUS, "open_chargeback", set())
     assert tools._contest("cliente1988", "TX1004")["error"] == "not_eligible"
 
 
 def test_schema_rejects_bad_ids():
     import re
 
-    tx = tools.DOMAIN_TOOLS["contest_transaction"]["input_schema"]["properties"]["transaction_id"]["pattern"]
+    tx = tools.DOMAIN_TOOLS["open_chargeback"]["input_schema"]["properties"]["transaction_id"]["pattern"]
     term = tools.DOMAIN_TOOLS["restart_terminal"]["input_schema"]["properties"]["terminal_id"]["pattern"]
     assert re.match(tx, "TX1004") and not re.match(tx, "1004")
     assert re.match(term, "T1988A") and not re.match(term, "T1988")
+
+
+def test_spec_frozen_tool_names():
+    spec = {"get_settlements", "get_transactions", "get_terminal_status", "restart_terminal",
+            "request_anticipation", "open_chargeback"}
+    assert spec <= set(tools.DOMAIN_TOOLS)
+
+
+def test_settlements_items_cover_yesterday_with_status():
+    items = tools._schedule("cliente1988")["data"]["items"]
+    yesterday = [i for i in items if i["sale_date"] == "2026-10-30"]
+    assert {i["transaction_id"]: (i["deposit_date"], i["status"]) for i in yesterday} == {
+        "TX1003": ("2026-11-03", "prevista"), "TX1004": ("2026-12-15", "prevista")}  # 30 úteis: pula 02/11 e 20/11
+    assert any(i["status"] == "liquidada" for i in items)
+
+
+def test_terminal_has_firmware_and_blocked_flag():
+    t = tools._terminals("cliente1988")["data"]["terminals"][0]
+    assert t["firmware"] and t["blocked"] is False

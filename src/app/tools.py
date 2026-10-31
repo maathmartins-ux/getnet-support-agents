@@ -112,7 +112,7 @@ def _tx(t: dict, today: date) -> dict:
 def _contestable() -> set[str]:
     from .agents import ELIGIBLE_STATUS  # import tardio: agents importa actions, que importa este módulo
 
-    return set(ELIGIBLE_STATUS.get("contest_transaction", CONTESTABLE))
+    return set(ELIGIBLE_STATUS.get("open_chargeback", CONTESTABLE))
 
 
 def _all_tx(m: dict) -> list[dict]:
@@ -144,9 +144,13 @@ def _schedule(user_id: str) -> dict:
         day["items"].append({"transaction_id": t["transaction_id"], "modality": t["modality"],
                              "amount": t["amount"], "sale_date": t["sale_date"]})
     upcoming = sorted(by_day.values(), key=lambda d: d["deposit_date"])
+    # uma linha por venda aprovada (liquidada ou prevista): "o dinheiro de ontem cai quando?" em qualquer dia
+    sales = [{"sale_date": t["sale_date"], "transaction_id": t["transaction_id"], "amount": t["amount"],
+              "modality": t["modality"], "brand": t["brand"], "deposit_date": t["deposit_date"],
+              "status": t["settlement"]} for t in _all_tx(m) if t["status"] == "aprovada"]
     return {"ok": True, "data": {
         "today": _today().isoformat(), "rule": "pix D0, débito D+1, crédito D+30 em dias úteis",
-        "upcoming": upcoming, "total_to_receive": _money(sum(d["total"] for d in upcoming)),
+        "items": sales, "upcoming": upcoming, "total_to_receive": _money(sum(d["total"] for d in upcoming)),
         "available_for_anticipation": _available(m), "anticipation_fee_pct": m["anticipation_fee_pct"]}}
 
 
@@ -200,7 +204,8 @@ def _terminals(user_id: str) -> dict:
     m = _merchant(user_id)
     if not m:
         return _NOT_FOUND
-    return {"ok": True, "data": {"terminals": [{**t, "online": t["status"] == "online"} for t in m["terminals"]]}}
+    return {"ok": True, "data": {"terminals": [{**t, "online": t["status"] == "online",
+                                                       "blocked": t["status"] == "bloqueado"} for t in m["terminals"]]}}
 
 
 # --- escrita (só roda depois da confirmação, e da aprovação quando risk = high) -----------------
@@ -248,7 +253,7 @@ _TX_ID = {"type": "string", "pattern": r"^TX\d{4}$", "description": "Identificad
 _TERM_ID = {"type": "string", "pattern": r"^T\d{4}[A-Z]$", "description": "Identificador do terminal (ex.: T1988A)"}
 _NONE = {"type": "object", "properties": {}, "additionalProperties": False}
 DOMAIN_TOOLS = {
-    "get_receivables_schedule": {
+    "get_settlements": {
         "description": "Agenda de recebimento do lojista: valores previstos por data de depósito (pix D0, débito "
                        "D+1, crédito D+30, em dias úteis), total a receber e o total disponível para antecipação.",
         "write": False, "input_schema": _NONE, "fn": _schedule},
@@ -258,7 +263,7 @@ DOMAIN_TOOLS = {
         "write": False, "fn": _sales,
         "input_schema": {"type": "object", "additionalProperties": False,
                          "properties": {"days": {"type": "integer", "minimum": 1, "maximum": 30}}}},
-    "list_transactions": {
+    "get_transactions": {
         "description": "Transações do lojista (aprovadas e recusadas, com código e motivo da recusa, data de "
                        "depósito e se pode ser contestada). Filtro opcional por status.",
         "write": False, "fn": _transactions,
@@ -282,7 +287,7 @@ DOMAIN_TOOLS = {
         "input_schema": {"type": "object", "additionalProperties": False,
                          "properties": {"amount": {"type": "number", "exclusiveMinimum": 0,
                                                    "description": "Valor bruto em reais"}}}},
-    "contest_transaction": {
+    "open_chargeback": {
         "description": "Abre contestação (estorno) de uma transação APROVADA. Transação recusada não pode ser "
                        "contestada. Exige confirmação do lojista e aprovação de um atendente.",
         "write": True, "risk": "high", "fn": _contest,

@@ -5,8 +5,8 @@
     "plan": "Get Smart",
     "anticipation_fee_pct": 1.99,
     "terminals": [
-      {"terminal_id": "T1988A", "model": "Getnet Smart", "status": "online", "connection": "wifi", "signal": "forte", "paper": "ok", "last_seen_minutes": 2},
-      {"terminal_id": "T1988B", "model": "Getnet Clássica", "status": "sem_sinal", "connection": "chip", "signal": "sem_sinal", "paper": "ok", "last_seen_minutes": 190}
+      {"terminal_id": "T1988A", "model": "Getnet Smart", "firmware": "4.2.1", "status": "online", "connection": "wifi", "signal": "forte", "paper": "ok", "last_seen_minutes": 2},
+      {"terminal_id": "T1988B", "model": "Getnet Clássica", "firmware": "3.9.0", "status": "sem_sinal", "connection": "chip", "signal": "sem_sinal", "paper": "ok", "last_seen_minutes": 190}
     ],
     "transactions": [
       {"transaction_id": "TX1001", "days_ago": 0, "time": "08:12", "amount": 18.50, "brand": "Visa", "modality": "debito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T1988A"},
@@ -28,7 +28,7 @@
     "plan": "Get Clássica",
     "anticipation_fee_pct": 2.49,
     "terminals": [
-      {"terminal_id": "T2024A", "model": "Getnet Clássica", "status": "sem_bobina", "connection": "chip", "signal": "medio", "paper": "sem_bobina", "last_seen_minutes": 5}
+      {"terminal_id": "T2024A", "model": "Getnet Clássica", "firmware": "4.0.3", "status": "sem_bobina", "connection": "chip", "signal": "medio", "paper": "sem_bobina", "last_seen_minutes": 5}
     ],
     "transactions": [
       {"transaction_id": "TX2001", "days_ago": 0, "time": "10:00", "amount": 95.00, "brand": "Hipercard", "modality": "credito", "status": "aprovada", "code": "00", "reason": "Aprovada", "terminal_id": "T2024A"},
