@@ -11,7 +11,7 @@ flowchart TD
   AUTH -->|401 / 429| OUT_ERR[erro HTTP]
   AUTH --> G1[guardrails.py pre_check<br/>regex + desofuscação + máscara de PII]
   G1 -->|bloqueado| REF[recusa padrão<br/>intent=blocked]
-  G1 --> PAR{{em paralelo}}
+  G1 --> PAR([em paralelo])
   PAR --> G2[guardrail 2<br/>Haiku low]
   PAR --> RT[router.py<br/>Haiku + JSON schema + few-shot k-NN<br/>offline: regras + k-NN]
   G2 -->|bloqueado| REF

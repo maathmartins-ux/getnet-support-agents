@@ -198,14 +198,14 @@ seção existe: `tests/test_evidence.py` falha se um sumir. Reproduzir tudo: `py
 
 | Decisão | Alternativa descartada | O que descartou |
 |---|---|---|
-| Supervisor LLM com tabela determinística como fallback | só LLM / só tabela | só LLM deixa o CI dependente de chave; só tabela não replaneja casos novos. Ver §5 Replanejamento, offline × ao vivo |
+| Supervisor LLM com tabela determinística como fallback ([ADR 0004](docs/adr/0004-supervisor-llm-com-tabela.md)) | só LLM / só tabela | só LLM deixa o CI dependente de chave; só tabela não replaneja casos novos. Ver §5 Replanejamento, offline × ao vivo |
 | Agentes independentes em threads | asyncio | os agentes fazem I/O síncrono (SQLite, SDK); threads cortam o p95 sem reescrever a pilha (`tests/test_parallel.py`) |
 | Effort por papel (supervisor low, agentes medium) | um effort global | o p95 ao vivo da v2 vinha do supervisor em medium (comentário em `src/app/config.py`) |
-| BM25 + rerank Haiku do top-20 | embeddings desde o início | medido antes do relógio: o BM25 já acha a fonte no top-20 em 90,4% e no top-3 em 70,8%; o gargalo é a ordem, não o recall (`src/app/config.py`). Números deste corpus: `--compare-retrievers --rerank` em `evals/results/` |
+| BM25 + rerank Haiku do top-20 ([ADR 0005](docs/adr/0005-rag-bm25-rerank.md)) | embeddings desde o início | medido antes do relógio: o BM25 já acha a fonte no top-20 em 90,4% e no top-3 em 70,8%; o gargalo é a ordem, não o recall (`src/app/config.py`). Números deste corpus: `--compare-retrievers --rerank` em `evals/results/` |
 | Glossário pt↔en na consulta | traduzir a pergunta com LLM | custo e latência em todo turno para um mapeamento fixo de termos de produto |
 | Portão de cobertura com limiar calibrado | limiar escolhido à mão | `--calibrate-gate` escolhe o limiar que maximiza respondidas com recusa ≥ 85% (`tests/test_rag.py::test_gate_threshold_is_chosen_by_measurement`) |
-| Checagem de números sem LLM | juiz LLM em todo turno | determinística, grátis, roda em 100% dos turnos; o juiz fica no eval |
-| SQLite atrás de `Store` | Postgres/Redis | sobe com um comando; a troca para réplicas fica isolada num módulo ([ADR 0002](docs/adr/)) |
+| Checagem de números sem LLM ([ADR 0006](docs/adr/0006-checagem-numerica-sem-llm.md)) | juiz LLM em todo turno | determinística, grátis, roda em 100% dos turnos; o juiz fica no eval |
+| SQLite atrás de `Store` | Postgres/Redis | sobe com um comando; a troca para réplicas fica isolada num módulo ([ADR 0002](docs/adr/0002-replicas-sqlite.md)) |
 
 ## 5. Avaliação
 
@@ -266,7 +266,7 @@ regras do router e do supervisor) foi escrito no relógio. A medida, tirada do g
 | Limitação | Próximo passo |
 |---|---|
 | CRM fictício (lojistas `cliente1988` e `cliente2024`, datas relativas a hoje) | trocar `src/app/tools.py` por cliente HTTP da API real; o contrato das tools não muda |
-| Rate limit, métricas e cache no processo/SQLite de um nó | Redis para limite e locks, Prometheus remoto, Postgres atrás de `Store` ([ADR 0002](docs/adr/)) |
+| Rate limit, métricas e cache no processo/SQLite de um nó | Redis para limite e locks, Prometheus remoto, Postgres atrás de `Store` ([ADR 0002](docs/adr/0002-replicas-sqlite.md)) |
 | Corpus é um retrato do site na data de coleta | reingestão agendada com diff por SHA-256 e alerta de página que sumiu |
 | Held-out e rótulos humanos com um único autor | segundo rotulador e kappa entre humanos |
 | Eval ao vivo cobre parte dos casos por custo | rodar o conjunto inteiro com `--repeat 3` no CI noturno com teto de US$ |
