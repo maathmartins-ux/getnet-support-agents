@@ -5,7 +5,9 @@ services:
       - "8000:8000"
     environment:
       # Desafio com payload {"message","user_id"} no enunciado: AUTH_MODE=demo (docs/adr/0001-auth-mode-demo.md).
-      AUTH_MODE: ${AUTH_MODE:-required}
+      AUTH_MODE: ${AUTH_MODE:-demo}
+      # Limiar do portão de cobertura escolhido por `run_evals --calibrate-gate` (31/10/2026, 15:02).
+      COVERAGE_MIN_SCORE: ${COVERAGE_MIN_SCORE:-8.378}
     env_file:
       - path: .env
         required: false
