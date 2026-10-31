@@ -1,0 +1,52 @@
+{"text": "Quais são as taxas da maquininha Getnet?", "intent": "knowledge"}
+{"text": "Como peço uma maquininha da Getnet?", "intent": "knowledge"}
+{"text": "A Getnet tem conta digital para lojista?", "intent": "knowledge"}
+{"text": "What payment methods does Getnet accept?", "intent": "knowledge"}
+{"text": "Does the Get Smart print receipts?", "intent": "knowledge"}
+{"text": "Como funciona o crediário da Getnet?", "intent": "knowledge"}
+{"text": "Quais planos de recebimento existem?", "intent": "knowledge"}
+{"text": "How long does Getnet take to pay out credit sales?", "intent": "knowledge"}
+{"text": "O que é o Super Get?", "intent": "knowledge"}
+{"text": "Tem aluguel ou só venda de maquininha?", "intent": "knowledge"}
+{"text": "Quem ganhou o jogo de ontem?", "intent": "general"}
+{"text": "Qual a capital da Austrália?", "intent": "general"}
+{"text": "What time is it in London?", "intent": "general"}
+{"text": "Vai fazer frio em Gramado no fim de semana?", "intent": "general"}
+{"text": "How much is bitcoin today?", "intent": "general"}
+{"text": "Qual o feriado do mês que vem?", "intent": "general"}
+{"text": "Quanto está o iene japonês?", "intent": "general"}
+{"text": "What's the inflation rate in Brazil?", "intent": "general"}
+{"text": "Quanto eu recebo na próxima semana?", "intent": "support"}
+{"text": "Mostra o extrato das minhas vendas", "intent": "support"}
+{"text": "Qual o meu plano atual?", "intent": "support"}
+{"text": "Which of my terminals are offline?", "intent": "support"}
+{"text": "List my last sales", "intent": "support"}
+{"text": "Qual chave Pix está cadastrada?", "intent": "support"}
+{"text": "Tem alguma venda minha negada hoje?", "intent": "support"}
+{"text": "What bank account do my payouts go to?", "intent": "support"}
+{"text": "Cancela a venda de 50 reais", "intent": "support"}
+{"text": "A máquina trava na tela de senha", "intent": "troubleshoot"}
+{"text": "O visor está apagado", "intent": "troubleshoot"}
+{"text": "Terminal shows error 05", "intent": "troubleshoot"}
+{"text": "The card reader beeps and does nothing", "intent": "troubleshoot"}
+{"text": "Não consigo emparelhar a máquina com o celular", "intent": "troubleshoot"}
+{"text": "A bateria não segura carga", "intent": "troubleshoot"}
+{"text": "A impressora da máquina não sai papel", "intent": "troubleshoot"}
+{"text": "Payment keeps failing on contactless", "intent": "troubleshoot"}
+{"text": "Aparece falha de comunicação na tela", "intent": "troubleshoot"}
+{"text": "Quero um atendente", "intent": "human_request"}
+{"text": "Me liga alguém da Getnet", "intent": "human_request"}
+{"text": "Talk to an agent", "intent": "human_request"}
+{"text": "Need a human, not a bot", "intent": "human_request"}
+{"text": "Preciso falar com o suporte humano", "intent": "human_request"}
+{"text": "Transfere para um analista", "intent": "human_request"}
+{"text": "I'd like to escalate this to a supervisor", "intent": "human_request"}
+{"text": "Abre atendimento com pessoa", "intent": "human_request"}
+{"text": "Qual a taxa do débito e quanto vendi hoje?", "intent": "multi"}
+{"text": "How does Pix work and where are my payouts?", "intent": "multi"}
+{"text": "Me explica o Super Get e mostra minhas vendas recusadas", "intent": "multi"}
+{"text": "Quanto está o euro e qual meu plano?", "intent": "multi"}
+{"text": "Tell me about the Get Smart and check my terminals", "intent": "multi"}
+{"text": "Como antecipar e quanto tenho a receber?", "intent": "multi"}
+{"text": "Qual a diferença das máquinas e qual eu tenho?", "intent": "multi"}
+{"text": "What's the crediário and my last payout?", "intent": "multi"}
