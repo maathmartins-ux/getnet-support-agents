@@ -51,7 +51,17 @@ WEB_SEARCH = {"type": "web_search_20260209", "name": "web_search", "max_uses": 2
 # Ação de escrita -> status do item em que ela faz sentido. Regra explícita, testada e do domínio: sem entrada,
 # qualquer status serve. Getnet v3 (31/10/2026): contestar escolhia a ÚLTIMA transação, mesmo recusada; ali a
 # regra seria {"open_chargeback_dispute": {"approved"}}. Exemplo do kit: estorno só de pedido que já saiu.
-ELIGIBLE_STATUS: dict[str, set[str]] = {"refund_record": {"enviado", "entregue"}}
+ELIGIBLE_STATUS: dict[str, set[str]] = {"open_chargeback": {"aprovada"}, "contest_transaction": {"aprovada"},
+                                        "refund_record": {"enviado", "entregue"}}
+# Caminho offline do Customer Support Agent (SPEC: tools congeladas). Ordem importa: ação antes de consulta.
+_ANTICIPATE = re.compile(r"\b(antecip\w*|advance\w*|anticipat\w*)\b", re.IGNORECASE)
+_RESTART = re.compile(r"\b(reinici\w*|reset\w*|restart\w*|reboot\w*|religa\w*)\b", re.IGNORECASE)
+_CHARGEBACK = re.compile(r"\b(contest\w*|chargeback|disput\w*|estorn\w*|refund\w*)\b", re.IGNORECASE)
+_DECLINE = re.compile(r"\b(recus\w*|negad\w*|declin\w*|denied|rejeit\w*|reject\w*|c[oó]digo|code)\b",
+                      re.IGNORECASE)
+_TERMINAL = re.compile(r"\b(conect\w*|connect\w*|internet|wi-?fi|chip|sinal|signal|offline|liga|turn on|bobina"
+                       r"|paper|tela|screen|trav\w*|frozen|maquininha|card machine|terminal|pos)\b", re.IGNORECASE)
+_SALES = re.compile(r"\b(vend\w*|sales|faturei|sold)\b", re.IGNORECASE)
 
 
 @dataclass
@@ -308,8 +318,12 @@ def records_agent(ctx: Context) -> AgentResult:
         except LLMError:
             pass  # provedor caiu: mesmo atendimento pelo caminho determinístico
     rid = _record_id(ctx)
-    if not rid:
-        return AgentResult("records", "ok", text=_t(ctx, "Qual o número do pedido?", "What is the order number?"))
+    if rid and "lookup_record" in {s["name"] for s in tool_specs()}:
+        return _records_by_id(ctx, rid)  # consulta por número de registro (tool genérica do kit)
+    return _records_offline(ctx)
+
+
+def _records_by_id(ctx: Context, rid: str) -> AgentResult:
     tool = ("refund_record" if _REFUND.search(ctx.text) else
             "cancel_record" if _CANCEL.search(ctx.text) else "lookup_record")
     calls: list[ToolCall] = []
@@ -322,35 +336,115 @@ def records_agent(ctx: Context) -> AgentResult:
             status = found["data"]["status"]
             return AgentResult("records", "ok", tool_calls=calls, evidence=ev,
                                facts={"record_id": rid, "status": status, "ineligible": tool},
-                               text=_t(ctx, f'O pedido {rid} está "{status}": essa ação ainda não se aplica a ele. '
+                               text=_t(ctx, f'O registro {rid} está "{status}": essa ação não se aplica. '
                                             "Nada foi feito.",
-                                       f'Order {rid} is "{status}": this action does not apply to it yet. '
+                                       f'Record {rid} is "{status}": this action does not apply. '
                                        "Nothing has been done."))
     result, call = run_tool(tool, {"record_id": rid}, ctx.user_id, ctx.conversation_id)
     calls.append(call)
     ev.append(json.dumps(result, ensure_ascii=False))
     if result.get("needs_confirmation"):
-        aid = result["action_id"]
-        verb_pt, verb_en = ("estornar", "refund") if tool == "refund_record" else ("cancelar", "cancel")
-        extra_pt = " Depois da sua confirmação, um atendente aprova." if result.get("risk") == "high" else ""
-        extra_en = " After you confirm, a human agent approves it." if result.get("risk") == "high" else ""
-        return AgentResult("records", "ok", tool_calls=calls, pending_action=aid, facts={"record_id": rid},
-                           evidence=ev,
-                           text=_t(ctx, f"Para {verb_pt} o pedido {rid}, confirme a ação {aid}.{extra_pt} "
-                                        "Nada foi feito ainda.",
-                                   f"To {verb_en} order {rid}, confirm action {aid}.{extra_en} "
-                                   "Nothing has been done yet."))
+        return AgentResult("records", "ok", tool_calls=calls, pending_action=result["action_id"],
+                           facts={"record_id": rid}, evidence=ev, text=_confirm_text(ctx, tool, result))
     if result.get("error") == "not_found":
         return AgentResult("records", "ok", tool_calls=calls, facts={"record_not_found": rid}, evidence=ev,
-                           text=_t(ctx, f"Não encontrei o pedido {rid} na sua conta.",
-                                   f"I couldn't find order {rid} in your account."))
+                           text=_t(ctx, f"Não encontrei o registro {rid} na sua conta.",
+                                   f"I couldn't find record {rid} in your account."))
     if not result.get("ok"):
         return AgentResult("records", "error", tool_calls=calls, reason="tool_error", evidence=ev)
     data = result["data"]
-    return AgentResult("records", "ok", tool_calls=calls, facts={"record_id": rid, "status": data["status"]},
-                       evidence=ev,
-                       text=_t(ctx, f"Pedido {rid} ({data['item']}): {data['status']}.",
-                               f"Order {rid} ({data['item']}): {data['status']}."))
+    return AgentResult("records", "ok", tool_calls=calls, facts={"record_id": rid, "status": data.get("status")},
+                       evidence=ev, text=f"{rid}: {_brief(data)}")
+
+
+def _offline_tool(ctx: Context) -> str:
+    """Qual tool o caminho determinístico chama (SPEC: support × troubleshoot). Ação explícita vence consulta."""
+    text = ctx.text
+    if _ANTICIPATE.search(text) and ctx.intent != "knowledge":
+        return "request_anticipation"
+    if _RESTART.search(text):
+        return "restart_terminal"
+    if _CHARGEBACK.search(text):
+        return "open_chargeback"
+    if _DECLINE.search(text):
+        return "get_transactions"
+    if ctx.intent == "troubleshoot" or (_TERMINAL.search(text) and not _SALES.search(text)):
+        return "get_terminal_status"
+    return "get_settlements"
+
+
+def _brief(data, limit: int = 5) -> str:
+    """Resumo legível e fiel do retorno da tool (os números saem do dado, nunca do texto)."""
+    if isinstance(data, dict):
+        lists = [(k, v) for k, v in data.items() if isinstance(v, list)]
+        head = "; ".join(f"{k}: {v}" for k, v in data.items() if not isinstance(v, (list, dict)))
+        body = " | ".join(f"{k}: " + " / ".join(_brief(i) for i in v[:limit]) for k, v in lists)
+        return "; ".join(p for p in (head, body) if p)
+    if isinstance(data, list):
+        return " / ".join(_brief(i) for i in data[:limit])
+    return str(data)
+
+
+def _confirm_text(ctx: Context, tool: str, result: dict) -> str:
+    aid = result["action_id"]
+    what_pt, what_en = {"request_anticipation": ("antecipar seus recebíveis", "advance your receivables"),
+                        "restart_terminal": ("reiniciar a maquininha", "restart the card machine"),
+                        "open_chargeback": ("abrir a contestação", "open the dispute")}.get(tool, (tool, tool))
+    extra_pt = " Depois da sua confirmação, um atendente aprova." if result.get("risk") == "high" else ""
+    extra_en = " After you confirm, a human agent approves it." if result.get("risk") == "high" else ""
+    preview = _brief(result.get("preview") or result.get("args") or {})
+    preview = f" ({preview})" if preview else ""
+    return _t(ctx, f"Para {what_pt}{preview}, confirme a ação {aid}.{extra_pt} Nada foi feito ainda.",
+              f"To {what_en}{preview}, confirm action {aid}.{extra_en} Nothing has been done yet.")
+
+
+def _records_offline(ctx: Context) -> AgentResult:
+    """Customer Support Agent sem LLM: escolhe a tool pela regra, consulta antes de agir, nunca inventa dado."""
+    tool = _offline_tool(ctx)
+    calls: list[ToolCall] = []
+    ev: list[str] = []
+
+    def call(name: str, args: dict) -> dict:
+        result, c = run_tool(name, args, ctx.user_id, ctx.conversation_id)
+        calls.append(c)
+        ev.append(json.dumps(result, ensure_ascii=False))
+        return result
+
+    args: dict = {}
+    if tool == "restart_terminal":  # ação sobre um terminal: descobre qual antes de propor
+        found = call("get_terminal_status", {})
+        terms = (found.get("data") or {}).get("terminals") or []
+        if not terms:
+            return AgentResult("records", "error", tool_calls=calls, reason="tool_error", evidence=ev)
+        target = next((t for t in terms if not t.get("online")), terms[0])
+        args = {"terminal_id": target.get("terminal_id") or target.get("id")}
+    elif tool == "open_chargeback":  # contestação só de transação elegível (aprovada)
+        found = call("get_transactions", {})
+        txs = (found.get("data") or {}).get("transactions") or []
+        target = latest_eligible(txs, tool)
+        if target is None:
+            return AgentResult("records", "ok", tool_calls=calls, evidence=ev, facts={"ineligible": tool},
+                               text=_t(ctx, "Não há transação aprovada elegível para contestação. Nada foi feito.",
+                                       "There is no approved transaction eligible for a dispute. Nothing was done."))
+        args = {"transaction_id": target.get("transaction_id") or target.get("id")}
+    elif tool == "get_transactions" and ctx.intent == "troubleshoot":
+        args = {"status": "recusada"}
+    result = call(tool, args)
+    if result.get("needs_confirmation"):
+        return AgentResult("records", "ok", tool_calls=calls, pending_action=result["action_id"], evidence=ev,
+                           facts={"tool": tool}, text=_confirm_text(ctx, tool, result))
+    if not result.get("ok"):
+        return AgentResult("records", "error", tool_calls=calls, reason="tool_error", evidence=ev)
+    summary = _brief(result.get("data"))
+    # o manual (faq) roda depois e busca com o que a tool achou: código de recusa, conectividade, modelo
+    hints = [summary[:200]] if ctx.intent == "troubleshoot" else []
+    label_pt, label_en = {"get_settlements": ("Sua agenda de recebimentos", "Your settlement schedule"),
+                          "get_transactions": ("Suas transações recentes", "Your recent transactions"),
+                          "get_terminal_status": ("Status da sua maquininha", "Your card machine status")}.get(
+        tool, (tool, tool))
+    return AgentResult("records", "ok", tool_calls=calls, evidence=ev,
+                       facts={"tool": tool, "data": summary[:500], "query_hints": hints},
+                       text=_t(ctx, f"{label_pt}: {summary}", f"{label_en}: {summary}"))
 
 
 # --- escalation ------------------------------------------------------------------------------
